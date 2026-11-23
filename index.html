@@ -1,0 +1,2897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>oGV B2C Marketing - AIESEC in CS Tracker | AIESEC in University of Moratuwa</title>
+  
+  <!-- Typography: Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+          },
+          colors: {
+            app: {
+              blue: '#0052CC',
+              blueHover: '#0747A6',
+              blueLight: '#DEEBFF',
+              blueBorder: '#B3D4FF',
+              dark: '#172B4D',
+              subtle: '#5E6C84',
+              muted: '#6B778C',
+              bg: '#F4F5F7',
+              surface: '#FFFFFF',
+              border: '#DFE1E6',
+              divider: '#EBECF0',
+              hover: '#EBECF0',
+              selected: '#DEEBFF',
+              green: '#36B37E',
+              greenLight: '#E3FCEF',
+              greenDark: '#006644',
+              amber: '#FFAB00',
+              amberLight: '#FFF0B3',
+              amberDark: '#172B4D',
+              red: '#FF5630',
+              redLight: '#FFEBE6',
+              purple: '#6554C0',
+              purpleLight: '#EAE6FF',
+              teal: '#00B8D9',
+              tealLight: '#E6FCFF'
+            }
+          },
+          boxShadow: {
+            'app-card': '0 1px 1px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31)',
+            'app-card-hover': '0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31)',
+            'app-dropdown': '0 4px 12px rgba(9, 30, 66, 0.15), 0 0 1px rgba(9, 30, 66, 0.31)',
+            'app-modal': '0 8px 30px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React 18, ReactDOM, Babel Standalone & Canvas Confetti -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* Custom refined scrollbars */
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: #F4F5F7; }
+    ::-webkit-scrollbar-thumb { background: #C1C7D0; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #A5ADBA; }
+    
+    @keyframes appFadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-app-fadeIn { animation: appFadeIn 0.15s ease-out; }
+
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .line-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="bg-[#F4F5F7] text-[#172B4D] font-sans antialiased min-h-screen overflow-x-hidden selection:bg-[#DEEBFF] selection:text-[#0052CC]">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useMemo } = React;
+
+    // =========================================================================
+    // AIESEC IN CS TRACKER VECTOR SVG ICONS
+    // =========================================================================
+    const AiesecCsLogo = ({ className = "w-6 h-6" }) => (
+      <svg className={className} viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="6" fill="#0052CC" />
+        {/* AIESEC forward human leader figure */}
+        <circle cx="14" cy="7.5" r="2.2" fill="#FFFFFF" />
+        <path d="M10.5 21L13.8 13.5L11.8 12L13.2 9.5H15.2L16.5 12.2L18.8 11.8V13.8L16.6 14.2L15.2 16.2L18 21H15.6L13.8 17.6L12.4 21H10.5Z" fill="#FFFFFF" />
+        {/* CS technology node accent */}
+        <circle cx="21.5" cy="6.5" r="2" fill="#00C4CC" />
+      </svg>
+    );
+
+    const GridIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="5" cy="5" r="2" /><circle cx="12" cy="5" r="2" /><circle cx="19" cy="5" r="2" />
+        <circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" />
+        <circle cx="5" cy="19" r="2" /><circle cx="12" cy="19" r="2" /><circle cx="19" cy="19" r="2" />
+      </svg>
+    );
+
+    const KanbanIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 5v11" /><path d="M12 5v6" /><path d="M18 5v14" />
+      </svg>
+    );
+
+    const TimelineIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /><path d="M8 14h4" /><path d="M12 18h6" />
+      </svg>
+    );
+
+    const RocketIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+      </svg>
+    );
+
+    const AwardIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="8" r="6" /><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+      </svg>
+    );
+
+    const UsersIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    );
+
+    const ShieldIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" /><path d="m9 12 2 2 4-4" />
+      </svg>
+    );
+
+    const TaskIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none">
+        <rect width="20" height="20" x="2" y="2" rx="3" fill="#0052CC" />
+        <path d="m8 12 3 3 5-5" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+
+    const PriorityHighIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="#FF5630" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="18 15 12 9 6 15" /><polyline points="18 9 12 3 6 9" />
+      </svg>
+    );
+
+    const PriorityMediumIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="#FFAB00" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="5" y1="9" x2="19" y2="9" /><line x1="5" y1="15" x2="19" y2="15" />
+      </svg>
+    );
+
+    const PriorityLowIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="#36B37E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+    );
+
+    const SearchIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+      </svg>
+    );
+
+    const PlusIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 12h14" /><path d="M12 5v14" />
+      </svg>
+    );
+
+    const BellIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" />
+      </svg>
+    );
+
+    const SettingsIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>
+      </svg>
+    );
+
+    const ChevronDownIcon = ({ className = "w-3 h-3" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+    );
+
+    const ChevronLeftIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+    );
+
+    const ChevronRightIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+    );
+
+    const ArrowRightIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+      </svg>
+    );
+
+    const ArrowLeftIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m12 19-7-7 7-7" /><path d="M19 12H5" />
+      </svg>
+    );
+
+    const CheckIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 6 9 17l-5-5" />
+      </svg>
+    );
+
+    const ExternalLinkIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      </svg>
+    );
+
+    const MessageIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    );
+
+    const StarIcon = ({ className = "w-4 h-4", filled = false }) => (
+      <svg className={className} viewBox="0 0 24 24" fill={filled ? "#FFAB00" : "none"} stroke={filled ? "#FFAB00" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+      </svg>
+    );
+
+    const ShareIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+      </svg>
+    );
+
+    const CopyIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+      </svg>
+    );
+
+    const RefreshIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" /><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /><path d="M8 16H3v5" />
+      </svg>
+    );
+
+    const LogOutIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
+      </svg>
+    );
+
+    const InfoIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+      </svg>
+    );
+
+    const DatabaseIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+      </svg>
+    );
+
+    // =========================================================================
+    // RBAC MATRIX & SPECIFICATION
+    // =========================================================================
+    const ROLE_DEFINITIONS = {
+      member:  { title: 'Team Member',       clearanceLevel: 'Level 1: Creator',       level: 1, color: 'bg-[#DEEBFF] text-[#0052CC] border-[#B3D4FF]' },
+      leader:  { title: 'Team Leader',       clearanceLevel: 'Level 2: Reviewer',      level: 2, color: 'bg-[#FFF0B3] text-[#172B4D] border-[#FFE380]' },
+      lcvp:    { title: 'LCVP oGV B2C',      clearanceLevel: 'Level 3: Final Sign-off', level: 3, color: 'bg-[#E3FCEF] text-[#006644] border-[#ABF5D1]' },
+      admin:   { title: 'Candidate LCVP TM', clearanceLevel: 'Level 4: Governance',    level: 4, color: 'bg-[#EAE6FF] text-[#403294] border-[#C0B6F2]' }
+    };
+
+    function canTransition(role, fromCol, toCol) {
+      const def = ROLE_DEFINITIONS[role];
+      if (!def) return { allowed: false, reason: 'Unknown user authorization role.' };
+      if (fromCol === toCol) return { allowed: false, reason: 'Deliverable is already in this status.' };
+
+      if (fromCol === 'member' && toCol === 'leader') {
+        if (def.level >= 2) return { allowed: true };
+        return { allowed: false, reason: 'Clearance Level 2 (Team Leader, LCVP, or Admin) required to escalate deliverable to Team Leader Review.' };
+      }
+      if (fromCol === 'leader' && toCol === 'lcvp') {
+        if (def.level >= 3) return { allowed: true };
+        return { allowed: false, reason: 'Clearance Level 3 (LCVP oGV B2C or Candidate TM Admin) required to authorize final publication.' };
+      }
+      if (fromCol === 'leader' && toCol === 'member') {
+        if (def.level >= 2) return { allowed: true };
+        return { allowed: false, reason: 'Clearance Level 2 (Team Leader or higher) required to return deliverable for modifications.' };
+      }
+      if (fromCol === 'lcvp' && toCol === 'leader') {
+        if (def.level >= 3) return { allowed: true };
+        return { allowed: false, reason: 'Clearance Level 3 (LCVP or Admin) required to reopen finalized deliverables.' };
+      }
+      return { allowed: false, reason: `Direct transition from ${fromCol} to ${toCol} is restricted by oGV governance protocol.` };
+    }
+
+    // =========================================================================
+    // SEED USERS & DEMO DATA
+    // =========================================================================
+    const USERS = [
+      { id: "u-member-1", name: "Kavinda Perera", email: "kavinda.perera@aiesec.net", role: "member", teamName: "Team Alpha (Global Classroom)", initials: "KP", title: "Content Creator", avatarBg: "bg-[#0052CC]" },
+      { id: "u-member-2", name: "Nimasha Fernando", email: "nimasha.fernando@aiesec.net", role: "member", teamName: "Team Alpha (Global Classroom)", initials: "NF", title: "Campaign Specialist", avatarBg: "bg-[#00B8D9]" },
+      { id: "u-member-3", name: "Tharindu Silva", email: "tharindu.silva@aiesec.net", role: "member", teamName: "Team Beta (Eco Pioneers)", initials: "TS", title: "Digital Marketer", avatarBg: "bg-[#6554C0]" },
+      { id: "u-leader-1", name: "Senuri Jayawardena", email: "senuri.jayawardena@aiesec.net", role: "leader", teamName: "Team Alpha (Global Classroom)", initials: "SJ", title: "Team Leader - Alpha", avatarBg: "bg-[#FFAB00]" },
+      { id: "u-leader-2", name: "Kasun Wickramasinghe", email: "kasun.wickramasinghe@aiesec.net", role: "leader", teamName: "Team Beta (Eco Pioneers)", initials: "KW", title: "Team Leader - Beta", avatarBg: "bg-[#36B37E]" },
+      { id: "u-lcvp", name: "Dulani Fernando", email: "dulani.fernando@aiesec.net", role: "lcvp", teamName: "Executive Board", initials: "DF", title: "LCVP oGV B2C", avatarBg: "bg-[#006644]" },
+      { id: "u-admin", name: "Thenuja", email: "thenuja.tm@aiesec.net", role: "admin", teamName: "Talent Management", initials: "TM", title: "Candidate LCVP TM", avatarBg: "bg-[#403294]" }
+    ];
+
+    const INITIAL_CARDS = [
+      { 
+        id: "KB-01", 
+        key: "OGV-101",
+        title: "B2C Digital Campaign: Undergraduate Volunteer Testimonials Reel", 
+        caption: "Fast-paced social media reel highlighting verified exchange experiences for Moratuwa undergraduates. High visual energy with upbeat trending audio.", 
+        canvaUrl: "https://www.canva.com/design/DAGTrendReelsWinter26/view", 
+        types: ["trend_based"], 
+        column: "member", 
+        priority: "high",
+        uploaderName: "Tharindu Silva", 
+        uploaderId: "u-member-3", 
+        uploaderRole: "member", 
+        teamName: "Team Beta (Eco Pioneers)", 
+        createdAt: "2026-11-23 11:20", 
+        startDate: "2026-11-20",
+        dueDate: "2026-11-26",
+        comments: [
+          { id: "c-1", authorName: "Kasun Wickramasinghe", authorRole: "Team Leader", text: "Design verified. Ensure high logo contrast on the opening frame before escalating to Leader Review.", timestamp: "2026-11-23 12:45" }
+        ] 
+      },
+      { 
+        id: "KB-02", 
+        key: "OGV-102",
+        title: "Destination Portfolio: Egypt Cultural & Leadership Exchange Guide", 
+        caption: "Comprehensive destination carousel for volunteer housing, local culture, and Cairo community leadership opportunities for Term 27.28 applicants.", 
+        canvaUrl: "https://www.canva.com/design/DAGEgyptCountryPromo26/view", 
+        types: ["country_based"], 
+        column: "leader", 
+        priority: "medium",
+        uploaderName: "Kavinda Perera", 
+        uploaderId: "u-member-1", 
+        uploaderRole: "member", 
+        teamName: "Team Alpha (Global Classroom)", 
+        createdAt: "2026-11-22 14:00", 
+        startDate: "2026-11-18",
+        dueDate: "2026-11-25",
+        comments: [
+          { id: "c-2", authorName: "Senuri Jayawardena", authorRole: "Team Leader", text: "Great work on the typography and visa infographic. Reviewed and approved by Team Leader.", timestamp: "2026-11-22 16:30" }
+        ] 
+      },
+      { 
+        id: "KB-03", 
+        key: "OGV-103",
+        title: "Global Classroom SDG 4 Education Campaign: Winter Cohort", 
+        caption: "Primary SDG 4 Quality Education awareness flyer for faculty noticeboards and Instagram story series with registered link in bio CTA.", 
+        canvaUrl: "https://www.canva.com/design/DAGSDG4EducationMora/view", 
+        types: ["project_based"], 
+        column: "lcvp", 
+        priority: "high",
+        uploaderName: "Nimasha Fernando", 
+        uploaderId: "u-member-2", 
+        uploaderRole: "member", 
+        teamName: "Team Alpha (Global Classroom)", 
+        createdAt: "2026-11-21 09:00", 
+        startDate: "2026-11-15",
+        dueDate: "2026-11-24",
+        comments: [
+          { id: "c-3", authorName: "Dulani Fernando", authorRole: "LCVP oGV B2C", text: "LCVP Final Sign-off Granted: Certified Ready to Post on all official B2C channels.", timestamp: "2026-11-21 15:00" }
+        ] 
+      },
+      { 
+        id: "KB-04", 
+        key: "OGV-104",
+        title: "Vietnam Cultural Exchange: Ho Chi Minh City Youth Program", 
+        caption: "Teaching English and cultural immersion program flyer tailored to first-year engineering and IT undergraduates seeking leadership development.", 
+        canvaUrl: "https://www.canva.com/design/DAGVietnamExchange26/view", 
+        types: ["country_based", "project_based"], 
+        column: "member", 
+        priority: "low",
+        uploaderName: "Kavinda Perera", 
+        uploaderId: "u-member-1", 
+        uploaderRole: "member", 
+        teamName: "Team Alpha (Global Classroom)", 
+        createdAt: "2026-11-23 15:00", 
+        startDate: "2026-11-22",
+        dueDate: "2026-11-28",
+        comments: [] 
+      },
+      { 
+        id: "KB-05", 
+        key: "OGV-105",
+        title: "Instagram Carousel: 5 Reasons to Volunteer Abroad in 2027", 
+        caption: "High-converting carousel post addressing common parental concerns, university credit validation, and international safety protocols.", 
+        canvaUrl: "https://www.canva.com/design/DAG5ReasonsCarousel27/view", 
+        types: ["trend_based"], 
+        column: "leader", 
+        priority: "medium",
+        uploaderName: "Tharindu Silva", 
+        uploaderId: "u-member-3", 
+        uploaderRole: "member", 
+        teamName: "Team Beta (Eco Pioneers)", 
+        createdAt: "2026-11-22 10:30", 
+        startDate: "2026-11-19",
+        dueDate: "2026-11-25",
+        comments: [
+          { id: "c-5", authorName: "Kasun Wickramasinghe", authorRole: "Team Leader", text: "Reviewed. Visual alignment matches Brand Guidelines 27.28. Escalated for LCVP final sign-off.", timestamp: "2026-11-22 14:00" }
+        ] 
+      }
+    ];
+
+    function triggerConfetti() {
+      if (window.confetti) {
+        window.confetti({
+          particleCount: 75,
+          spread: 60,
+          origin: { y: 0.7 },
+          colors: ['#0052CC', '#36B37E', '#FFAB00', '#6554C0', '#00B8D9']
+        });
+      }
+    }
+
+    // =========================================================================
+    // FLOATING TOAST SYSTEM
+    // =========================================================================
+    function ToastContainer({ toasts, onDismiss }) {
+      return (
+        <div className="fixed bottom-5 left-5 z-50 flex flex-col gap-2 max-w-md w-full pointer-events-none">
+          {toasts.map(toast => {
+            const isError = toast.type === 'error';
+            const isSuccess = toast.type === 'success';
+            const isWarning = toast.type === 'warning';
+            
+            let borderCls = 'border-[#DFE1E6] bg-white text-[#172B4D]';
+            let iconEl = <InfoIcon className="w-4 h-4 text-[#0052CC] shrink-0 mt-0.5" />;
+            
+            if (isError) {
+              borderCls = 'border-[#FF8F73] bg-[#FFEBE6] text-[#BF2600]';
+              iconEl = <div className="w-2 h-2 rounded-full bg-[#FF5630] shrink-0 mt-1.5" />;
+            } else if (isSuccess) {
+              borderCls = 'border-[#79F2C0] bg-[#E3FCEF] text-[#006644]';
+              iconEl = <CheckIcon className="w-4 h-4 text-[#36B37E] shrink-0 mt-0.5" />;
+            } else if (isWarning) {
+              borderCls = 'border-[#FFE380] bg-[#FFF0B3] text-[#172B4D]';
+              iconEl = <InfoIcon className="w-4 h-4 text-[#FFAB00] shrink-0 mt-0.5" />;
+            }
+
+            return (
+              <div 
+                key={toast.id}
+                className={`pointer-events-auto p-3.5 rounded-md border shadow-app-dropdown flex items-start justify-between gap-3 animate-app-fadeIn transition-all ${borderCls}`}
+              >
+                <div className="flex items-start gap-2.5 text-xs">
+                  {iconEl}
+                  <div>
+                    {toast.title && <div className="font-bold mb-0.5">{toast.title}</div>}
+                    <div className="leading-relaxed opacity-95">{toast.message}</div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => onDismiss(toast.id)} 
+                  className="text-xs font-bold opacity-60 hover:opacity-100 p-1"
+                >
+                  &times;
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // GLOBAL TOP NAVBAR
+    // =========================================================================
+    function TrackerNavbar({ 
+      currentUser, 
+      currentRole, 
+      onRoleChange, 
+      onOpenAddModal, 
+      onLogout, 
+      searchQuery, 
+      setSearchQuery,
+      sidebarCollapsed,
+      setSidebarCollapsed
+    }) {
+      const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+      const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+      const profileRef = useRef(null);
+      const notifRef = useRef(null);
+      const searchInputRef = useRef(null);
+
+      const currentDef = ROLE_DEFINITIONS[currentRole] || ROLE_DEFINITIONS.member;
+
+      useEffect(() => {
+        function handleClickOutside(e) {
+          if (profileRef.current && !profileRef.current.contains(e.target)) setIsProfileMenuOpen(false);
+          if (notifRef.current && !notifRef.current.contains(e.target)) setIsNotificationOpen(false);
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+      }, []);
+
+      useEffect(() => {
+        function handleKeyDown(e) {
+          if (e.key === '/' && document.activeElement !== searchInputRef.current && !['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) {
+            e.preventDefault();
+            searchInputRef.current?.focus();
+          }
+        }
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, []);
+
+      return (
+        <header className="bg-white border-b border-[#DFE1E6] sticky top-0 z-40 select-none">
+          <div className="bg-[#0747A6] text-white text-[11px] py-1 px-4 sm:px-6 flex items-center justify-between font-sans">
+            <div className="flex items-center gap-2">
+              <span className="font-bold tracking-wide">AIESEC IN MORATUWA</span>
+              <span className="opacity-40">/</span>
+              <span>TERM 27.28</span>
+              <span className="opacity-40">/</span>
+              <span className="text-[#FFE380] font-medium hidden sm:inline">AIESEC IN CS TRACKER · oGV B2C PERFORMANCE</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-emerald-300 font-semibold uppercase text-[10px] bg-[#0052CC] px-2 py-0.5 rounded border border-[#2684FF]">
+                RBAC ACTIVE: {currentDef.clearanceLevel}
+              </span>
+            </div>
+          </div>
+
+          <div className="h-13 px-3 sm:px-5 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <button 
+                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                title="Toggle Project Sidebar ([)"
+                className="p-1.5 text-[#5E6C84] hover:text-[#172B4D] hover:bg-[#EBECF0] rounded transition-colors"
+              >
+                <GridIcon className="w-4 h-4" />
+              </button>
+
+              <div className="flex items-center gap-2 pr-3 border-r border-[#DFE1E6]">
+                <AiesecCsLogo className="w-6 h-6 shrink-0" />
+                <span className="text-base font-bold text-[#172B4D] tracking-tight hidden md:inline">
+                  AIESEC <span className="font-semibold text-[#0052CC]">in CS</span> <span className="font-normal text-[#5E6C84]">Tracker</span>
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 px-2 py-1 rounded hover:bg-[#EBECF0] transition-colors cursor-pointer text-xs font-semibold text-[#172B4D]">
+                <div className="w-5 h-5 rounded bg-[#0052CC] text-white text-[10px] font-bold flex items-center justify-center">
+                  CS
+                </div>
+                <span className="truncate max-w-[140px] sm:max-w-none">oGV B2C Deliverables</span>
+              </div>
+
+              <button
+                onClick={onOpenAddModal}
+                title="Create deliverable (c)"
+                className="ml-1 sm:ml-2 px-3 py-1.5 bg-[#0052CC] hover:bg-[#0747A6] active:bg-[#00388B] text-white text-xs sm:text-sm font-semibold rounded shadow-xs transition-all flex items-center gap-1.5 group"
+              >
+                <PlusIcon className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span>Create</span>
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="relative hidden md:block w-48 lg:w-64">
+                <SearchIcon className="w-3.5 h-3.5 text-[#5E6C84] absolute left-2.5 top-1/2 -translate-y-1/2" />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search deliverables..."
+                  className="w-full pl-8 pr-7 py-1 text-xs bg-[#FAFBFC] hover:bg-[#EBECF0] focus:bg-white border border-[#DFE1E6] rounded focus:border-[#0052CC] focus:ring-2 focus:ring-[#DEEBFF] outline-none transition-all placeholder:text-[#5E6C84]"
+                />
+                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-[#5E6C84] font-mono bg-[#EBECF0] px-1 py-0.2 rounded border border-[#DFE1E6]">
+                  /
+                </span>
+              </div>
+
+              <div className="relative" ref={notifRef}>
+                <button
+                  onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                  className="p-1.5 text-[#5E6C84] hover:text-[#172B4D] hover:bg-[#EBECF0] rounded relative transition-colors"
+                  title="Notifications"
+                >
+                  <BellIcon className="w-4 h-4" />
+                  <span className="w-2 h-2 rounded-full bg-[#FF5630] absolute top-1 right-1"></span>
+                </button>
+
+                {isNotificationOpen && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-app-dropdown border border-[#DFE1E6] py-2 z-50 animate-app-fadeIn text-[#172B4D]">
+                    <div className="px-4 py-2 border-b border-[#EBECF0] flex items-center justify-between">
+                      <span className="text-xs font-bold">Notifications</span>
+                      <span className="text-[10px] font-semibold text-[#0052CC] hover:underline cursor-pointer">Mark all as read</span>
+                    </div>
+                    <div className="divide-y divide-[#EBECF0] max-h-72 overflow-y-auto">
+                      <div className="p-3 text-xs hover:bg-[#FAFBFC] transition-colors cursor-pointer">
+                        <div className="flex items-center gap-1.5 text-[11px] text-[#5E6C84] mb-0.5">
+                          <span className="font-semibold text-[#172B4D]">Senuri Jayawardena</span> approved OGV-102
+                        </div>
+                        <p className="text-xs text-[#172B4D] font-medium truncate">Destination Portfolio: Egypt Guide</p>
+                        <span className="text-[10px] text-[#5E6C84]">15 minutes ago</span>
+                      </div>
+                      <div className="p-3 text-xs hover:bg-[#FAFBFC] transition-colors cursor-pointer">
+                        <div className="flex items-center gap-1.5 text-[11px] text-[#5E6C84] mb-0.5">
+                          <span className="font-semibold text-[#172B4D]">Dulani Fernando</span> signed off OGV-103
+                        </div>
+                        <p className="text-xs text-[#172B4D] font-medium truncate">Global Classroom SDG 4 Flyer</p>
+                        <span className="text-[10px] text-[#5E6C84]">2 hours ago</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <button 
+                className="p-1.5 text-[#5E6C84] hover:text-[#172B4D] hover:bg-[#EBECF0] rounded transition-colors hidden sm:block" 
+                title="Tracker Settings"
+              >
+                <SettingsIcon className="w-4 h-4" />
+              </button>
+
+              <div className="relative" ref={profileRef}>
+                <button
+                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                  className="flex items-center gap-1.5 p-1 rounded hover:bg-[#EBECF0] transition-colors"
+                >
+                  <div className={`w-7 h-7 rounded-full ${currentUser?.avatarBg || 'bg-[#0052CC]'} text-white text-xs font-bold flex items-center justify-center shadow-xs border border-white`}>
+                    {currentUser?.initials || 'KP'}
+                  </div>
+                  <ChevronDownIcon className="w-3 h-3 text-[#5E6C84] hidden sm:block" />
+                </button>
+
+                {isProfileMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-72 bg-white rounded-md shadow-app-dropdown border border-[#DFE1E6] py-2 z-50 animate-app-fadeIn text-[#172B4D]">
+                    <div className="px-4 py-2 border-b border-[#EBECF0]">
+                      <div className="text-xs font-bold truncate">{currentUser?.name}</div>
+                      <div className="text-[11px] text-[#5E6C84] font-mono truncate">{currentUser?.email}</div>
+                      <div className="mt-2 flex items-center gap-1.5">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${currentDef.color}`}>
+                          {currentDef.title}
+                        </span>
+                        <span className="text-[10px] text-[#5E6C84]">{currentDef.clearanceLevel}</span>
+                      </div>
+                    </div>
+
+                    <div className="px-4 pt-2.5 pb-1 text-[11px] font-bold text-[#5E6C84] uppercase tracking-wider">
+                      Switch Active Role (RBAC Simulator)
+                    </div>
+                    <div className="px-2 space-y-0.5">
+                      {USERS.slice(0, 5).concat([USERS[5], USERS[6]]).map((u) => {
+                        const isSel = currentRole === u.role;
+                        return (
+                          <button
+                            key={u.id}
+                            onClick={() => {
+                              onRoleChange(u.role);
+                              setIsProfileMenuOpen(false);
+                            }}
+                            className={`w-full px-2.5 py-1.5 rounded text-left text-xs flex items-center justify-between transition-colors ${
+                              isSel ? 'bg-[#DEEBFF] text-[#0052CC] font-bold' : 'hover:bg-[#F4F5F7] text-[#172B4D]'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2 truncate">
+                              <span className={`w-5 h-5 rounded-full ${u.avatarBg} text-white text-[10px] font-bold flex items-center justify-center shrink-0`}>
+                                {u.initials}
+                              </span>
+                              <div className="truncate">
+                                <div className="truncate">{u.name}</div>
+                                <div className="text-[10px] text-[#5E6C84] font-normal truncate">{u.title}</div>
+                              </div>
+                            </div>
+                            {isSel && <CheckIcon className="w-3.5 h-3.5 text-[#0052CC] shrink-0" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <div className="my-2 border-t border-[#EBECF0]" />
+                    <button
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        onLogout();
+                      }}
+                      className="w-full px-4 py-1.5 text-left text-xs text-[#FF5630] hover:bg-[#FFEBE6] flex items-center gap-2 font-medium transition-colors"
+                    >
+                      <LogOutIcon className="w-3.5 h-3.5" />
+                      <span>Log out of Tracker</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </header>
+      );
+    }
+
+    // =========================================================================
+    // COLLAPSIBLE NAVIGATION SIDEBAR
+    // =========================================================================
+    function TrackerSidebar({ activeView, onViewChange, collapsed, setCollapsed, cardsCount, readyCount }) {
+      const navItems = [
+        { key: 'kanban', label: 'Kanban Board', section: 'PLANNING', icon: <KanbanIcon className="w-4 h-4" />, badge: cardsCount },
+        { key: 'roadmap', label: 'Timeline / Roadmap', section: 'PLANNING', icon: <TimelineIcon className="w-4 h-4" /> },
+        { key: 'releases', label: 'Ready to Post Assets', section: 'PLANNING', icon: <RocketIcon className="w-4 h-4" />, badge: readyCount, badgeColor: 'bg-[#E3FCEF] text-[#006644]' },
+        { key: 'scoreboard', label: 'Scoreboard & RnR', section: 'PERFORMANCE', icon: <AwardIcon className="w-4 h-4" /> },
+        { key: 'team', label: 'Team Directory', section: 'PERFORMANCE', icon: <UsersIcon className="w-4 h-4" /> },
+        { key: 'admin', label: 'Governance & RBAC', section: 'GOVERNANCE', icon: <ShieldIcon className="w-4 h-4" /> },
+      ];
+
+      return (
+        <aside 
+          className={`bg-[#FAFBFC] border-r border-[#DFE1E6] flex flex-col justify-between transition-all duration-200 select-none z-30 shrink-0 ${
+            collapsed ? 'w-14' : 'w-60'
+          }`}
+        >
+          <div>
+            <div className="p-3.5 border-b border-[#EBECF0] flex items-center justify-between">
+              <div className="flex items-center gap-3 overflow-hidden">
+                <div className="w-8 h-8 rounded bg-[#0052CC] text-white font-bold flex items-center justify-center shrink-0 shadow-xs text-xs">
+                  CS
+                </div>
+                {!collapsed && (
+                  <div className="min-w-0">
+                    <h2 className="text-xs font-bold text-[#172B4D] truncate">AIESEC in CS</h2>
+                    <p className="text-[11px] text-[#5E6C84] truncate">oGV B2C Marketing · Term 27.28</p>
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={() => setCollapsed(!collapsed)}
+                title={collapsed ? "Expand sidebar ([)" : "Collapse sidebar ([)"}
+                className="p-1 text-[#5E6C84] hover:text-[#172B4D] hover:bg-[#EBECF0] rounded transition-colors"
+              >
+                {collapsed ? <ChevronRightIcon className="w-3.5 h-3.5" /> : <ChevronLeftIcon className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+
+            <div className="py-3 px-2 space-y-1">
+              {['PLANNING', 'PERFORMANCE', 'GOVERNANCE'].map(sec => {
+                const secItems = navItems.filter(i => i.section === sec);
+                return (
+                  <div key={sec} className="mb-3">
+                    {!collapsed && (
+                      <div className="px-2.5 py-1 text-[10px] font-bold text-[#5E6C84] uppercase tracking-wider">
+                        {sec}
+                      </div>
+                    )}
+                    <div className="space-y-0.5">
+                      {secItems.map(item => {
+                        const isActive = activeView === item.key;
+                        return (
+                          <button
+                            key={item.key}
+                            onClick={() => onViewChange(item.key)}
+                            title={collapsed ? item.label : undefined}
+                            className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded text-xs transition-colors font-medium ${
+                              isActive 
+                                ? 'bg-[#DEEBFF] text-[#0052CC] font-semibold' 
+                                : 'text-[#42526E] hover:bg-[#EBECF0] hover:text-[#172B4D]'
+                            }`}
+                          >
+                            <span className={isActive ? 'text-[#0052CC]' : 'text-[#5E6C84]'}>{item.icon}</span>
+                            {!collapsed && (
+                              <span className="flex-1 text-left truncate">{item.label}</span>
+                            )}
+                            {!collapsed && item.badge !== undefined && (
+                              <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${item.badgeColor || 'bg-[#DFE1E6] text-[#42526E]'}`}>
+                                {item.badge}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {!collapsed && (
+            <div className="p-3 border-t border-[#EBECF0] text-[11px] text-[#5E6C84]">
+              <div className="flex items-center justify-between text-[10px] mb-1">
+                <span>PROJECT TYPE</span>
+                <span className="font-semibold text-[#172B4D]">CS Chapter Deliverables</span>
+              </div>
+              <div className="text-[10px] text-[#6B778C]">AIESEC in CS Tracker · Term 27.28</div>
+            </div>
+          )}
+        </aside>
+      );
+    }
+
+    // =========================================================================
+    // KANBAN CARD
+    // =========================================================================
+    function KanbanCard({ card, currentRole, onCardClick, onMoveCard, density = 'comfortable' }) {
+      const issueKey = card.key || `OGV-${card.id.replace(/[^0-9]/g,'')||'101'}`;
+
+      const getPriorityIcon = (p) => {
+        if (p === 'high') return <PriorityHighIcon className="w-3.5 h-3.5" />;
+        if (p === 'low') return <PriorityLowIcon className="w-3.5 h-3.5" />;
+        return <PriorityMediumIcon className="w-3.5 h-3.5" />;
+      };
+
+      const getTypeBadge = (type) => {
+        const map = {
+          trend_based:   { cls: 'bg-[#EAE6FF] text-[#403294] border-[#C0B6F2]', label: 'Trend' },
+          country_based: { cls: 'bg-[#E6FCFF] text-[#006644] border-[#79F2C0]', label: 'Country' },
+          project_based: { cls: 'bg-[#DEEBFF] text-[#0052CC] border-[#B3D4FF]', label: 'Project' }
+        };
+        const m = map[type];
+        if (!m) return null;
+        return (
+          <span key={type} className={`text-[10px] font-bold px-1.5 py-0.2 rounded border ${m.cls}`}>
+            {m.label}
+          </span>
+        );
+      };
+
+      const renderWorkflowButton = () => {
+        if (card.column === 'member') {
+          const ck = canTransition(currentRole, 'member', 'leader');
+          return (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!ck.allowed) { alert(`ACCESS RESTRICTED:\n${ck.reason}`); return; }
+                onMoveCard(card.id, 'leader');
+              }}
+              title={ck.allowed ? "Escalate to Team Leader Review" : ck.reason}
+              className={`text-[11px] font-semibold px-2 py-0.5 rounded flex items-center gap-1 transition-all ${
+                ck.allowed
+                  ? 'bg-[#0052CC] text-white hover:bg-[#0747A6] shadow-xs'
+                  : 'bg-[#EBECF0] text-[#A5ADBA] cursor-not-allowed border border-[#DFE1E6]'
+              }`}
+            >
+              <span>Move to Review</span>
+              <ArrowRightIcon className="w-3 h-3" />
+            </button>
+          );
+        }
+        if (card.column === 'leader') {
+          const ckApprove = canTransition(currentRole, 'leader', 'lcvp');
+          const ckReturn = canTransition(currentRole, 'leader', 'member');
+          return (
+            <div className="flex items-center gap-1">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!ckReturn.allowed) { alert(`ACCESS RESTRICTED:\n${ckReturn.reason}`); return; }
+                  onMoveCard(card.id, 'member', 'Changes requested by reviewer.');
+                }}
+                title={ckReturn.allowed ? "Return to Member for modifications" : ckReturn.reason}
+                className="text-[11px] font-semibold px-1.5 py-0.5 rounded bg-[#FFEBE6] text-[#BF2600] hover:bg-[#FFBDAD] border border-[#FF8F73] flex items-center gap-0.5 transition-colors"
+              >
+                <ArrowLeftIcon className="w-3 h-3" />
+                <span>Return</span>
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!ckApprove.allowed) { alert(`ACCESS RESTRICTED:\n${ckApprove.reason}`); return; }
+                  onMoveCard(card.id, 'lcvp');
+                  triggerConfetti();
+                }}
+                title={ckApprove.allowed ? "Authorize publication as Ready to Post" : ckApprove.reason}
+                className={`text-[11px] font-semibold px-2 py-0.5 rounded flex items-center gap-1 transition-all ${
+                  ckApprove.allowed
+                    ? 'bg-[#36B37E] text-white hover:bg-[#00875A] shadow-xs'
+                    : 'bg-[#EBECF0] text-[#A5ADBA] cursor-not-allowed border border-[#DFE1E6]'
+                }`}
+              >
+                <span>Approve</span>
+                <ArrowRightIcon className="w-3 h-3" />
+              </button>
+            </div>
+          );
+        }
+        if (card.column === 'lcvp') {
+          return (
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E3FCEF] text-[#006644] border border-[#79F2C0] flex items-center gap-1">
+              <CheckIcon className="w-3 h-3 text-[#36B37E]" />
+              <span>Ready to Post</span>
+            </span>
+          );
+        }
+        return null;
+      };
+
+      return (
+        <div
+          onClick={() => onCardClick(card)}
+          className="bg-white rounded border border-[#DFE1E6] hover:border-[#4C9AFF] shadow-app-card hover:shadow-app-card-hover transition-all p-3 cursor-pointer flex flex-col justify-between group select-none"
+        >
+          <div>
+            <div className="flex items-center justify-between gap-1 mb-1.5">
+              <div className="flex items-center gap-1.5">
+                <TaskIcon className="w-3.5 h-3.5 shrink-0" />
+                <span className="text-xs font-bold text-[#0052CC] font-mono tracking-tight group-hover:underline">
+                  {issueKey}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                {getPriorityIcon(card.priority || 'medium')}
+                {(card.types || []).map(t => getTypeBadge(t))}
+              </div>
+            </div>
+
+            <h3 className="text-xs font-semibold text-[#172B4D] group-hover:text-[#0052CC] leading-snug line-clamp-2 transition-colors">
+              {card.title}
+            </h3>
+
+            {density === 'comfortable' && card.caption && (
+              <p className="text-[11px] text-[#5E6C84] mt-1 line-clamp-2 leading-relaxed">
+                {card.caption}
+              </p>
+            )}
+
+            {card.canvaUrl && (
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(card.canvaUrl, '_blank', 'noopener,noreferrer');
+                }}
+                className="mt-2 inline-flex items-center justify-between w-full px-2 py-1 bg-[#FAFBFC] hover:bg-[#EBECF0] border border-[#DFE1E6] rounded text-[11px] text-[#0052CC] font-medium transition-colors"
+                title="Open Canva design template"
+              >
+                <div className="flex items-center gap-1.5 truncate">
+                  <span className="w-3.5 h-3.5 rounded bg-[#00C4CC] text-white text-[9px] font-bold flex items-center justify-center shrink-0">
+                    C
+                  </span>
+                  <span className="truncate">Canva Asset: {card.title}</span>
+                </div>
+                <ExternalLinkIcon className="w-3 h-3 text-[#5E6C84] shrink-0 ml-1" />
+              </div>
+            )}
+
+            <div className="mt-2 text-[10px] text-[#5E6C84] truncate">
+              {card.teamName || 'oGV B2C Marketing Team'}
+            </div>
+          </div>
+
+          <div className="mt-3 pt-2 border-t border-[#EBECF0] flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1 text-[11px] text-[#5E6C84]" title={`${card.comments?.length || 0} comments`}>
+              <MessageIcon className="w-3.5 h-3.5" />
+              <span className="font-semibold text-xs">{card.comments?.length || 0}</span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {renderWorkflowButton()}
+              <div
+                className="w-6 h-6 rounded-full bg-[#0052CC] text-white text-[10px] font-bold flex items-center justify-center shrink-0 shadow-xs border border-white"
+                title={`Assignee: ${card.uploaderName || 'Team Member'}`}
+              >
+                {card.uploaderName ? card.uploaderName.split(' ').map(n=>n[0]).join('').slice(0,2) : 'KP'}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // KANBAN BOARD VIEW
+    // =========================================================================
+    function KanbanBoard({
+      cards,
+      currentRole,
+      currentUser,
+      onCardClick,
+      onMoveCard,
+      onOpenAddModal,
+      searchQuery,
+      setSearchQuery,
+      onShowToast
+    }) {
+      const [typeFilter, setTypeFilter] = useState('all');
+      const [assigneeFilter, setAssigneeFilter] = useState('all');
+      const [onlyMy, setOnlyMy] = useState(false);
+      const [density, setDensity] = useState('comfortable');
+      const [isStarred, setIsStarred] = useState(false);
+      const [dragOverCol, setDragOverCol] = useState(null);
+
+      const filtered = useMemo(() => {
+        return cards.filter(card => {
+          if (typeFilter !== 'all' && !card.types?.includes(typeFilter)) return false;
+          if (assigneeFilter !== 'all' && card.uploaderName !== assigneeFilter) return false;
+          if (onlyMy && currentUser && card.uploaderId !== currentUser.id && card.uploaderName !== currentUser.name) return false;
+          if (searchQuery.trim()) {
+            const q = searchQuery.toLowerCase();
+            const inTitle = card.title?.toLowerCase().includes(q);
+            const inCap = card.caption?.toLowerCase().includes(q);
+            const inAuthor = card.uploaderName?.toLowerCase().includes(q);
+            const inKey = (card.key || '').toLowerCase().includes(q);
+            if (!inTitle && !inCap && !inAuthor && !inKey) return false;
+          }
+          return true;
+        });
+      }, [cards, typeFilter, assigneeFilter, onlyMy, searchQuery, currentUser]);
+
+      const memberCards = filtered.filter(c => c.column === 'member');
+      const leaderCards = filtered.filter(c => c.column === 'leader');
+      const lcvpCards = filtered.filter(c => c.column === 'lcvp');
+
+      const columns = [
+        {
+          id: 'member',
+          title: 'SUBMISSIONS',
+          stage: 'Initial Creator Uploads & Content drafting',
+          accentColor: 'border-t-4 border-[#0052CC]',
+          headerBadge: 'bg-[#DEEBFF] text-[#0052CC]',
+          wipLimit: 8,
+          cards: memberCards
+        },
+        {
+          id: 'leader',
+          title: 'LEADER REVIEW',
+          stage: 'Quality Assurance & Alignment Verification',
+          accentColor: 'border-t-4 border-[#FFAB00]',
+          headerBadge: 'bg-[#FFF0B3] text-[#172B4D]',
+          wipLimit: 5,
+          cards: leaderCards
+        },
+        {
+          id: 'lcvp',
+          title: 'READY TO POST',
+          stage: 'LCVP Sign-off & Publication Archive',
+          accentColor: 'border-t-4 border-[#36B37E]',
+          headerBadge: 'bg-[#E3FCEF] text-[#006644]',
+          wipLimit: 12,
+          cards: lcvpCards
+        }
+      ];
+
+      const handleDrop = (e, targetCol) => {
+        e.preventDefault();
+        setDragOverCol(null);
+        const cardId = e.dataTransfer.getData('text/plain');
+        if (!cardId) return;
+
+        const card = cards.find(c => c.id === cardId);
+        if (!card || card.column === targetCol) return;
+
+        const ck = canTransition(currentRole, card.column, targetCol);
+        if (!ck.allowed) {
+          onShowToast({
+            type: 'error',
+            title: 'Transition Denied (RBAC Policy)',
+            message: ck.reason
+          });
+          return;
+        }
+
+        onMoveCard(cardId, targetCol);
+        if (targetCol === 'lcvp') triggerConfetti();
+        onShowToast({
+          type: 'success',
+          title: 'Workflow Transitioned',
+          message: `${card.key || card.title} moved to ${targetCol === 'lcvp' ? 'Ready to Post' : 'Leader Review'}.`
+        });
+      };
+
+      return (
+        <div className="flex flex-col gap-4">
+          <div className="bg-white p-4 rounded-lg border border-[#DFE1E6] shadow-xs">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div>
+                <div className="flex items-center gap-1.5 text-xs text-[#5E6C84] mb-1 font-medium">
+                  <span className="hover:underline cursor-pointer">Projects</span>
+                  <span>/</span>
+                  <span className="hover:underline cursor-pointer">AIESEC in CS</span>
+                  <span>/</span>
+                  <span className="text-[#172B4D] font-semibold">Term 27.28 Sprint 1</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <h1 className="text-xl font-bold text-[#172B4D] tracking-tight">
+                    oGV B2C Deliverables Board
+                  </h1>
+                  <button 
+                    onClick={() => setIsStarred(!isStarred)}
+                    className="p-1 text-[#5E6C84] hover:bg-[#EBECF0] rounded transition-colors"
+                    title={isStarred ? "Remove from starred" : "Star this board"}
+                  >
+                    <StarIcon className="w-4 h-4" filled={isStarred} />
+                  </button>
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-[#EBECF0] text-[#172B4D]">
+                    Kanban
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2 bg-[#FAFBFC] px-3 py-1.5 rounded border border-[#DFE1E6] text-xs font-semibold text-[#5E6C84]">
+                  <span>Total: <strong className="text-[#172B4D]">{cards.length}</strong></span>
+                  <span className="text-[#DFE1E6]">|</span>
+                  <span>Ready: <strong className="text-[#006644]">{lcvpCards.length}</strong></span>
+                </div>
+                <button
+                  onClick={() => {
+                    navigator.clipboard?.writeText?.(window.location.href);
+                    onShowToast({ type: 'success', title: 'Link Copied', message: 'Board URL copied to clipboard.' });
+                  }}
+                  className="px-2.5 py-1.5 text-xs font-semibold rounded border border-[#DFE1E6] hover:bg-[#EBECF0] text-[#42526E] flex items-center gap-1.5 transition-colors"
+                >
+                  <ShareIcon className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Share</span>
+                </button>
+                <button
+                  onClick={onOpenAddModal}
+                  className="px-3 py-1.5 bg-[#0052CC] hover:bg-[#0747A6] text-white text-xs font-semibold rounded shadow-xs flex items-center gap-1.5 transition-colors"
+                >
+                  <PlusIcon className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <span>Create Deliverable</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-[#EBECF0] flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="relative w-40 sm:w-52">
+                  <SearchIcon className="w-3.5 h-3.5 text-[#5E6C84] absolute left-2.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Filter board..."
+                    className="w-full pl-8 pr-6 py-1 text-xs bg-[#FAFBFC] hover:bg-white border border-[#DFE1E6] rounded focus:bg-white focus:border-[#0052CC] focus:ring-1 focus:ring-[#0052CC] outline-none transition-all placeholder:text-[#5E6C84]"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-[#5E6C84] hover:text-[#172B4D]"
+                    >
+                      &times;
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex items-center -space-x-1 pl-1">
+                  {USERS.slice(0, 4).map(u => {
+                    const isSel = assigneeFilter === u.name;
+                    return (
+                      <button
+                        key={u.id}
+                        onClick={() => setAssigneeFilter(isSel ? 'all' : u.name)}
+                        title={`Filter by ${u.name}`}
+                        className={`w-6 h-6 rounded-full ${u.avatarBg} text-white text-[10px] font-bold flex items-center justify-center border-2 transition-transform ${
+                          isSel ? 'border-[#0052CC] scale-110 z-10' : 'border-white hover:scale-105'
+                        }`}
+                      >
+                        {u.initials}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  onClick={() => setOnlyMy(!onlyMy)}
+                  className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
+                    onlyMy
+                      ? 'bg-[#0052CC] text-white font-semibold'
+                      : 'bg-[#F4F5F7] hover:bg-[#EBECF0] text-[#172B4D] border border-[#DFE1E6]'
+                  }`}
+                >
+                  Only my deliverables
+                </button>
+
+                <div className="flex items-center gap-1 border-l border-[#DFE1E6] pl-2">
+                  {[
+                    ['all', 'All'],
+                    ['trend_based', 'Trend'],
+                    ['country_based', 'Country'],
+                    ['project_based', 'Project']
+                  ].map(([k, label]) => {
+                    const isSel = typeFilter === k;
+                    return (
+                      <button
+                        key={k}
+                        onClick={() => setTypeFilter(k)}
+                        className={`px-2.5 py-1 rounded text-xs transition-colors ${
+                          isSel
+                            ? 'bg-[#172B4D] text-white font-semibold shadow-xs'
+                            : 'bg-[#F4F5F7] hover:bg-[#EBECF0] text-[#42526E] border border-[#DFE1E6]'
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {(typeFilter !== 'all' || assigneeFilter !== 'all' || searchQuery || onlyMy) && (
+                  <button
+                    onClick={() => {
+                      setTypeFilter('all');
+                      setAssigneeFilter('all');
+                      setSearchQuery('');
+                      setOnlyMy(false);
+                    }}
+                    className="text-xs text-[#0052CC] hover:underline px-1 font-semibold"
+                  >
+                    Clear filters
+                  </button>
+                )}
+              </div>
+
+              <div className="flex items-center gap-1 text-xs text-[#5E6C84]">
+                <span className="hidden sm:inline">Density:</span>
+                <button
+                  onClick={() => setDensity(density === 'comfortable' ? 'compact' : 'comfortable')}
+                  className="px-2 py-0.5 rounded border border-[#DFE1E6] bg-[#FAFBFC] hover:bg-[#EBECF0] text-[11px] font-semibold text-[#172B4D] transition-colors"
+                >
+                  {density === 'comfortable' ? 'Comfortable' : 'Compact'}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {columns.map(col => {
+              const isOver = dragOverCol === col.id;
+              return (
+                <div
+                  key={col.id}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    if (dragOverCol !== col.id) setDragOverCol(col.id);
+                  }}
+                  onDragLeave={() => setDragOverCol(null)}
+                  onDrop={(e) => handleDrop(e, col.id)}
+                  className={`bg-[#F4F5F7] rounded-lg p-3 flex flex-col min-h-[600px] border transition-all ${col.accentColor} ${
+                    isOver ? 'border-[#0052CC] bg-[#DEEBFF]/30 ring-2 ring-[#0052CC]' : 'border-[#DFE1E6]'
+                  }`}
+                >
+                  <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#EBECF0]">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-[#5E6C84] tracking-wider uppercase">
+                        {col.title}
+                      </span>
+                      <span className={`text-[11px] font-bold px-2 py-0.2 rounded-full ${col.headerBadge}`}>
+                        {col.cards.length}
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-[#5E6C84] font-medium">
+                      Max: {col.wipLimit}
+                    </span>
+                  </div>
+
+                  <p className="text-[11px] text-[#5E6C84] mb-3 leading-snug">
+                    {col.stage}
+                  </p>
+
+                  <div className="flex-1 flex flex-col gap-2.5 overflow-y-auto">
+                    {col.cards.map(card => (
+                      <div
+                        key={card.id}
+                        draggable
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData('text/plain', card.id);
+                          e.dataTransfer.effectAllowed = 'move';
+                        }}
+                      >
+                        <KanbanCard
+                          card={card}
+                          currentRole={currentRole}
+                          onCardClick={onCardClick}
+                          onMoveCard={onMoveCard}
+                          density={density}
+                        />
+                      </div>
+                    ))}
+
+                    {col.cards.length === 0 && (
+                      <div className="flex-1 border-2 border-dashed border-[#DFE1E6] rounded-md p-6 flex flex-col items-center justify-center text-center">
+                        <p className="text-xs text-[#5E6C84] font-medium">No deliverables in this stage</p>
+                        <p className="text-[10px] text-slate-400 mt-1">Drag items here or click Create</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {col.id === 'member' && (
+                    <button
+                      onClick={onOpenAddModal}
+                      className="mt-3 w-full py-1.5 px-2 bg-transparent hover:bg-[#EBECF0] text-[#5E6C84] hover:text-[#172B4D] text-xs font-semibold rounded flex items-center justify-center gap-1.5 transition-colors border border-transparent hover:border-[#DFE1E6]"
+                    >
+                      <PlusIcon className="w-3.5 h-3.5 stroke-[2.5]" />
+                      <span>Create deliverable</span>
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // ROADMAP / TIMELINE VIEW
+    // =========================================================================
+    function RoadmapView({ cards, onCardClick }) {
+      return (
+        <div className="flex flex-col gap-4">
+          <div className="bg-white p-4 rounded-lg border border-[#DFE1E6] shadow-xs">
+            <div className="flex items-center gap-1.5 text-xs text-[#5E6C84] mb-1">
+              <span>Projects</span><span>/</span><span>AIESEC in CS</span><span>/</span><span className="text-[#172B4D] font-semibold">Sprint Timeline</span>
+            </div>
+            <h1 className="text-xl font-bold text-[#172B4D] tracking-tight">Timeline & Deliverables Schedule</h1>
+            <p className="text-xs text-[#5E6C84] mt-1">Term 27.28 Sprint 1 · November 2026 Execution Window</p>
+          </div>
+
+          <div className="bg-white rounded-lg border border-[#DFE1E6] shadow-xs overflow-hidden">
+            <div className="grid grid-cols-12 border-b border-[#EBECF0] bg-[#FAFBFC] text-xs font-bold text-[#5E6C84] py-2.5 px-4">
+              <div className="col-span-5">Deliverable Issue / Campaign</div>
+              <div className="col-span-2 text-center">Status</div>
+              <div className="col-span-5 grid grid-cols-3 text-center">
+                <span>Week 1</span><span>Week 2 (Active)</span><span>Week 3</span>
+              </div>
+            </div>
+
+            <div className="divide-y divide-[#EBECF0]">
+              {cards.map((card, idx) => {
+                const statusStyles = {
+                  member: { label: 'Submissions', bar: 'bg-[#0052CC]' },
+                  leader: { label: 'Leader Review', bar: 'bg-[#FFAB00]' },
+                  lcvp:   { label: 'Ready to Post', bar: 'bg-[#36B37E]' },
+                };
+                const st = statusStyles[card.column] || statusStyles.member;
+
+                return (
+                  <div
+                    key={card.id}
+                    onClick={() => onCardClick(card)}
+                    className="grid grid-cols-12 items-center py-3 px-4 hover:bg-[#FAFBFC] cursor-pointer transition-colors text-xs"
+                  >
+                    <div className="col-span-5 pr-3">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <TaskIcon className="w-3.5 h-3.5 shrink-0" />
+                        <span className="font-mono font-bold text-[#0052CC]">{card.key || `OGV-10${idx+1}`}</span>
+                        <span className="text-[#172B4D] font-semibold truncate">{card.title}</span>
+                      </div>
+                      <span className="text-[11px] text-[#5E6C84] truncate block">{card.teamName} · {card.uploaderName}</span>
+                    </div>
+
+                    <div className="col-span-2 text-center">
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        card.column === 'lcvp' ? 'bg-[#E3FCEF] text-[#006644]' :
+                        card.column === 'leader' ? 'bg-[#FFF0B3] text-[#172B4D]' : 'bg-[#DEEBFF] text-[#0052CC]'
+                      }`}>
+                        {st.label}
+                      </span>
+                    </div>
+
+                    <div className="col-span-5 grid grid-cols-3 items-center h-8 relative">
+                      <div className="absolute inset-0 grid grid-cols-3 divide-x divide-[#EBECF0] pointer-events-none opacity-40">
+                        <div></div><div></div><div></div>
+                      </div>
+                      <div className={`col-span-2 mx-1 h-5 rounded-md ${st.bar} text-white text-[10px] font-bold flex items-center px-2 shadow-xs truncate`}>
+                        {card.title}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // RELEASES & READY DELIVERABLES VIEW
+    // =========================================================================
+    function ReleasesView({ cards, onCardClick }) {
+      const readyCards = cards.filter(c => c.column === 'lcvp');
+
+      return (
+        <div className="flex flex-col gap-4">
+          <div className="bg-white p-4 rounded-lg border border-[#DFE1E6] shadow-xs">
+            <div className="flex items-center gap-1.5 text-xs text-[#5E6C84] mb-1">
+              <span>Projects</span><span>/</span><span>AIESEC in CS</span><span>/</span><span className="text-[#172B4D] font-semibold">Published Releases</span>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h1 className="text-xl font-bold text-[#172B4D] tracking-tight">Ready to Post Deliverables Archive</h1>
+                <p className="text-xs text-[#5E6C84] mt-1">Verified campaigns officially signed off by LCVP oGV B2C for immediate publication.</p>
+              </div>
+              <div className="bg-[#E3FCEF] border border-[#79F2C0] px-3.5 py-1.5 rounded-md text-xs font-bold text-[#006644] flex items-center gap-1.5">
+                <CheckIcon className="w-4 h-4 text-[#36B37E]" />
+                <span>{readyCards.length} Deliverables Ready for Socials</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {readyCards.map(card => (
+              <div
+                key={card.id}
+                onClick={() => onCardClick(card)}
+                className="bg-white rounded-lg border border-[#DFE1E6] hover:border-[#36B37E] shadow-app-card hover:shadow-app-card-hover transition-all p-4 cursor-pointer flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="font-mono text-xs font-bold text-[#0052CC]">{card.key || 'OGV-103'}</span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#E3FCEF] text-[#006644] border border-[#79F2C0] flex items-center gap-1">
+                      <CheckIcon className="w-3 h-3" />
+                      <span>Certified Post Ready</span>
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-bold text-[#172B4D] leading-snug mb-2">{card.title}</h3>
+                  <p className="text-xs text-[#5E6C84] line-clamp-3 leading-relaxed mb-3">{card.caption}</p>
+
+                  {card.canvaUrl && (
+                    <a
+                      href={card.canvaUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-full py-1.5 px-3 bg-[#00C4CC]/10 hover:bg-[#00C4CC]/20 border border-[#00C4CC]/30 rounded text-xs text-[#007A80] font-semibold flex items-center justify-between transition-colors"
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-4 h-4 rounded bg-[#00C4CC] text-white text-[10px] font-bold flex items-center justify-center">C</span>
+                        <span>Open Canva Asset</span>
+                      </span>
+                      <ExternalLinkIcon className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-[#EBECF0] flex items-center justify-between text-xs text-[#5E6C84]">
+                  <span>By <strong>{card.uploaderName}</strong></span>
+                  <span>{card.createdAt?.split(' ')[0]}</span>
+                </div>
+              </div>
+            ))}
+
+            {readyCards.length === 0 && (
+              <div className="col-span-full bg-white rounded-lg border border-dashed border-[#DFE1E6] p-10 text-center">
+                <RocketIcon className="w-8 h-8 text-[#5E6C84] mx-auto mb-2 opacity-50" />
+                <h3 className="text-sm font-bold text-[#172B4D]">No Deliverables Signed Off Yet</h3>
+                <p className="text-xs text-[#5E6C84] mt-1">Review Column 2 deliverables with LCVP clearance to certify them for release.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // SCOREBOARD & RECOGNITION (RnR) VIEW
+    // =========================================================================
+    function ScoreboardView({ cards, users }) {
+      const members = users.filter(u => u.role === 'member');
+      const leaders = users.filter(u => u.role === 'leader');
+
+      const memberScores = members.map(m => {
+        const uc = cards.filter(c => c.uploaderId === m.id);
+        const ap = uc.filter(c => c.column === 'lcvp');
+        const ut = new Set();
+        uc.forEach(c => (c.types || []).forEach(t => ut.add(t)));
+        let pts = ap.length * 10;
+        if (ut.size >= 2) pts += 5;
+        return { user: m, total: uc.length, approved: ap.length, points: pts };
+      }).sort((a, b) => b.points - a.points);
+
+      const leaderScores = leaders.map(l => {
+        const teamKeyword = l.teamName?.includes('Alpha') ? 'Alpha' : 'Beta';
+        const tc = cards.filter(c => c.teamName?.includes(teamKeyword));
+        const ta = tc.filter(c => c.column === 'lcvp');
+        return { user: l, teamApproved: ta.length, points: ta.length * 5 };
+      }).sort((a, b) => b.points - a.points);
+
+      return (
+        <div className="flex flex-col gap-6">
+          <div className="bg-white p-5 rounded-lg border border-[#DFE1E6] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-1.5 text-xs text-[#5E6C84] mb-1 font-medium">
+                <span>Projects</span><span>/</span><span>AIESEC in CS</span><span>/</span><span className="text-[#172B4D] font-semibold">Rewards & Recognition</span>
+              </div>
+              <h1 className="text-xl font-bold text-[#172B4D] tracking-tight">Monthly Performance & Recognition</h1>
+              <p className="text-xs text-[#5E6C84] mt-1">Term 27.28 Sprint 1 · Verified points calculated from LCVP certified deliverables.</p>
+            </div>
+            <button
+              onClick={() => triggerConfetti()}
+              className="px-4 py-2 bg-[#0052CC] hover:bg-[#0747A6] text-white text-xs font-semibold rounded shadow-xs flex items-center gap-2 transition-colors self-start sm:self-auto"
+            >
+              <AwardIcon className="w-4 h-4 text-[#FFE380]" />
+              <span>Celebrate Winners 🎉</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="bg-white p-4 rounded-lg border border-[#DFE1E6] shadow-xs">
+              <span className="text-[10px] font-bold text-[#5E6C84] uppercase tracking-wider block">Total Submissions</span>
+              <span className="text-2xl font-bold text-[#172B4D] mt-1 block">{cards.length}</span>
+              <span className="text-[10px] text-[#36B37E] font-semibold">Active in Sprint 1</span>
+            </div>
+            <div className="bg-white p-4 rounded-lg border border-[#DFE1E6] shadow-xs">
+              <span className="text-[10px] font-bold text-[#5E6C84] uppercase tracking-wider block">Ready to Post</span>
+              <span className="text-2xl font-bold text-[#006644] mt-1 block">
+                {cards.filter(c => c.column === 'lcvp').length}
+              </span>
+              <span className="text-[10px] text-[#006644] font-semibold">Certified by LCVP</span>
+            </div>
+            <div className="bg-white p-4 rounded-lg border border-[#DFE1E6] shadow-xs">
+              <span className="text-[10px] font-bold text-[#5E6C84] uppercase tracking-wider block">In Review</span>
+              <span className="text-2xl font-bold text-[#FFAB00] mt-1 block">
+                {cards.filter(c => c.column === 'leader').length}
+              </span>
+              <span className="text-[10px] text-[#5E6C84]">Quality checking</span>
+            </div>
+            <div className="bg-white p-4 rounded-lg border border-[#DFE1E6] shadow-xs">
+              <span className="text-[10px] font-bold text-[#5E6C84] uppercase tracking-wider block">Top Contributor</span>
+              <span className="text-base font-bold text-[#172B4D] mt-1.5 block truncate">
+                {memberScores[0]?.user.name || 'Tharindu Silva'}
+              </span>
+              <span className="text-[10px] text-[#0052CC] font-semibold">{memberScores[0]?.points || 0} pts accumulated</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div className="bg-white rounded-lg border border-[#DFE1E6] shadow-xs overflow-hidden">
+              <div className="px-5 py-3 border-b border-[#EBECF0] bg-[#FAFBFC] flex items-center justify-between">
+                <h2 className="text-sm font-bold text-[#172B4D]">Best Team Member of the Month</h2>
+                <span className="text-[10px] font-bold text-[#0052CC] bg-[#DEEBFF] px-2 py-0.5 rounded uppercase">Sprint 1</span>
+              </div>
+              <div className="divide-y divide-[#EBECF0]">
+                {memberScores.map((ms, i) => (
+                  <div key={ms.user.id} className={`px-5 py-3.5 flex items-center justify-between ${i === 0 ? 'bg-[#FFFAE6]/60' : 'hover:bg-[#FAFBFC]'}`}>
+                    <div className="flex items-center gap-3">
+                      <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
+                        i === 0 ? 'bg-[#FFAB00] text-white shadow-xs' : i === 1 ? 'bg-[#A5ADBA] text-white' : i === 2 ? 'bg-[#CD7F32] text-white' : 'bg-[#EBECF0] text-[#5E6C84]'
+                      }`}>
+                        {i + 1}
+                      </span>
+                      <div className={`w-8 h-8 rounded-full ${ms.user.avatarBg} text-white text-xs font-bold flex items-center justify-center shadow-xs`}>
+                        {ms.user.initials}
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-[#172B4D] flex items-center gap-1.5">
+                          <span>{ms.user.name}</span>
+                          {i === 0 && <span className="text-[10px] bg-[#FFF0B3] text-[#172B4D] px-1.5 py-0.2 rounded font-bold">🏆 Leader</span>}
+                        </div>
+                        <div className="text-[11px] text-[#5E6C84]">{ms.user.teamName}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-bold text-[#172B4D]">{ms.points} pts</div>
+                      <div className="text-[10px] text-[#5E6C84]">{ms.approved} approved · {ms.total} total</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg border border-[#DFE1E6] shadow-xs overflow-hidden">
+              <div className="px-5 py-3 border-b border-[#EBECF0] bg-[#FAFBFC] flex items-center justify-between">
+                <h2 className="text-sm font-bold text-[#172B4D]">Best Team Leader of the Month</h2>
+                <span className="text-[10px] font-bold text-[#36B37E] bg-[#E3FCEF] px-2 py-0.5 rounded uppercase">Sprint 1</span>
+              </div>
+              <div className="divide-y divide-[#EBECF0]">
+                {leaderScores.map((ls, i) => (
+                  <div key={ls.user.id} className={`px-5 py-3.5 flex items-center justify-between ${i === 0 ? 'bg-[#FFFAE6]/60' : 'hover:bg-[#FAFBFC]'}`}>
+                    <div className="flex items-center gap-3">
+                      <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
+                        i === 0 ? 'bg-[#FFAB00] text-white shadow-xs' : 'bg-[#EBECF0] text-[#5E6C84]'
+                      }`}>
+                        {i + 1}
+                      </span>
+                      <div className={`w-8 h-8 rounded-full ${ls.user.avatarBg} text-white text-xs font-bold flex items-center justify-center shadow-xs`}>
+                        {ls.user.initials}
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-[#172B4D] flex items-center gap-1.5">
+                          <span>{ls.user.name}</span>
+                          {i === 0 && <span className="text-[10px] bg-[#FFF0B3] text-[#172B4D] px-1.5 py-0.2 rounded font-bold">🏆 Top Leader</span>}
+                        </div>
+                        <div className="text-[11px] text-[#5E6C84]">{ls.user.teamName}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-bold text-[#172B4D]">{ls.points} pts</div>
+                      <div className="text-[10px] text-[#5E6C84]">{ls.teamApproved} approved by LCVP</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // TEAM DIRECTORY VIEW
+    // =========================================================================
+    function TeamDirectoryView({ users, cards }) {
+      return (
+        <div className="flex flex-col gap-4">
+          <div className="bg-white p-4 rounded-lg border border-[#DFE1E6] shadow-xs">
+            <div className="flex items-center gap-1.5 text-xs text-[#5E6C84] mb-1 font-medium">
+              <span>Projects</span><span>/</span><span>AIESEC in CS</span><span>/</span><span className="text-[#172B4D] font-semibold">Team Directory</span>
+            </div>
+            <h1 className="text-xl font-bold text-[#172B4D] tracking-tight">Squads & Clearance Directory</h1>
+            <p className="text-xs text-[#5E6C84] mt-1">AIESEC in University of Moratuwa · Term 27.28 oGV B2C Department Personnel</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {users.map(u => {
+              const def = ROLE_DEFINITIONS[u.role] || ROLE_DEFINITIONS.member;
+              const userCards = cards.filter(c => c.uploaderId === u.id || c.uploaderName === u.name);
+              const approvedCount = userCards.filter(c => c.column === 'lcvp').length;
+
+              return (
+                <div key={u.id} className="bg-white rounded-lg border border-[#DFE1E6] shadow-xs p-4 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <div className={`w-11 h-11 rounded-full ${u.avatarBg} text-white font-bold flex items-center justify-center text-sm shadow-xs border-2 border-white`}>
+                        {u.initials}
+                      </div>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${def.color}`}>
+                        {def.clearanceLevel}
+                      </span>
+                    </div>
+                    <h3 className="text-sm font-bold text-[#172B4D]">{u.name}</h3>
+                    <p className="text-xs text-[#5E6C84] font-medium">{u.title}</p>
+                    <p className="text-[11px] text-[#0052CC] font-mono mt-0.5">{u.email}</p>
+                    <div className="mt-3 text-xs text-[#172B4D] bg-[#FAFBFC] p-2.5 rounded border border-[#EBECF0]">
+                      <span className="text-[#5E6C84] text-[10px] uppercase font-bold block mb-0.5">Chapter Squad</span>
+                      {u.teamName}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-[#EBECF0] flex items-center justify-between text-xs text-[#5E6C84]">
+                    <span>Submissions: <strong className="text-[#172B4D]">{userCards.length}</strong></span>
+                    <span>Approved: <strong className="text-[#006644]">{approvedCount}</strong></span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // ADMIN & GOVERNANCE VIEW
+    // =========================================================================
+    function AdminView({ users, onResetData, onRoleChange, onShowToast, backendStatus, onTriggerSeed }) {
+      const [pendingUsers, setPendingUsers] = useState([
+        { id: 'p-1', name: 'Charith Bandara', email: 'charith.bandara@aiesec.net', role: 'leader', teamName: 'Team Gamma (Winter Peak)', date: '2026-11-23' }
+      ]);
+      const [isSeeding, setIsSeeding] = useState(false);
+
+      const handleApprove = (id, name) => {
+        setPendingUsers(pendingUsers.filter(u => u.id !== id));
+        onShowToast({
+          type: 'success',
+          title: 'Authorization Granted',
+          message: `${name}'s Team Leader account has been verified and activated.`
+        });
+      };
+
+      const handleSeed = async () => {
+        if (!onTriggerSeed) return;
+        setIsSeeding(true);
+        try {
+          const res = await onTriggerSeed();
+          if (res?.success) {
+            onShowToast({
+              type: 'success',
+              title: 'Database Seeded',
+              message: 'Term 27.28 initial deliverables and members populated in remote Supabase.'
+            });
+          } else {
+            onShowToast({
+              type: 'warning',
+              title: 'Database Notification',
+              message: res?.error || res?.message || 'Remote database configuration needed.'
+            });
+          }
+        } catch(e) {
+          onShowToast({
+            type: 'error',
+            title: 'Seed Error',
+            message: e.message
+          });
+        } finally {
+          setIsSeeding(false);
+        }
+      };
+
+      const isConnected = backendStatus?.database === 'connected';
+
+      return (
+        <div className="flex flex-col gap-6">
+          <div className="bg-white p-5 rounded-lg border border-[#DFE1E6] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span className="text-[10px] font-bold text-[#BF2600] bg-[#FFEBE6] px-2.5 py-0.5 rounded border border-[#FF8F73] uppercase tracking-wider">
+                Governance & Safety Protocol
+              </span>
+              <h2 className="text-base font-bold text-[#172B4D] mt-1.5">Admin Security Panel & RBAC Matrix</h2>
+              <p className="text-xs text-[#5E6C84]">LCVP TM oversight panel for leadership clearance activation and database audits.</p>
+            </div>
+            <div className="flex items-center gap-2 self-start sm:self-auto">
+              <button
+                onClick={onResetData}
+                className="text-xs font-semibold px-3.5 py-2 rounded border border-[#DFE1E6] hover:bg-[#F4F5F7] transition-colors text-[#172B4D] flex items-center gap-1.5"
+              >
+                <RefreshIcon className="w-3.5 h-3.5" />
+                <span>Reset Demo Registry</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Remote Supabase Database Connectivity Panel */}
+          <div className="bg-white rounded-lg border border-[#DFE1E6] shadow-xs p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${isConnected ? 'bg-[#E3FCEF] text-[#006644]' : 'bg-[#FFF0B3] text-[#172B4D]'}`}>
+                <DatabaseIcon className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-[#172B4D]">Remote Supabase Database Backend</h3>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${isConnected ? 'bg-[#E3FCEF] text-[#006644] border-[#79F2C0]' : 'bg-[#FFF0B3] text-[#172B4D] border-[#FFE380]'}`}>
+                    {isConnected ? 'LIVE CONNECTED' : 'LOCAL CACHE / PENDING CONFIG'}
+                  </span>
+                </div>
+                <p className="text-xs text-[#5E6C84] mt-0.5">
+                  {backendStatus?.message || (isConnected ? 'PostgreSQL tables synchronized.' : 'Running with local storage resilience. Connect your remote Supabase instance in .env.')}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleSeed}
+              disabled={isSeeding}
+              className="px-3.5 py-2 text-xs font-semibold rounded bg-[#0052CC] hover:bg-[#0747A6] text-white transition-colors flex items-center gap-1.5 shrink-0 disabled:opacity-50"
+            >
+              <RefreshIcon className={`w-3.5 h-3.5 ${isSeeding ? 'animate-spin' : ''}`} />
+              <span>{isSeeding ? 'Seeding...' : 'Seed Term 27.28 Data to Supabase'}</span>
+            </button>
+          </div>
+
+          <div className="bg-white rounded-lg border border-[#DFE1E6] shadow-xs overflow-hidden">
+            <div className="px-5 py-3 border-b border-[#EBECF0] bg-[#FAFBFC] flex items-center justify-between">
+              <h3 className="text-sm font-bold text-[#172B4D]">Pending Leadership Approvals</h3>
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#FFF0B3] text-[#172B4D]">
+                {pendingUsers.length} Pending
+              </span>
+            </div>
+            <div className="divide-y divide-[#EBECF0]">
+              {pendingUsers.map(u => (
+                <div key={u.id} className="px-5 py-3 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[#FFAB00] text-white text-xs font-bold flex items-center justify-center">
+                      CB
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-[#172B4D]">{u.name}</div>
+                      <div className="text-[11px] text-[#5E6C84]">{u.email} · Role: {u.role} · {u.teamName}</div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleApprove(u.id, u.name)}
+                    className="px-3 py-1.5 bg-[#36B37E] hover:bg-[#00875A] text-white text-xs font-semibold rounded transition-colors flex items-center gap-1 shadow-xs"
+                  >
+                    <CheckIcon className="w-3 h-3" />
+                    <span>Authorize Account</span>
+                  </button>
+                </div>
+              ))}
+              {pendingUsers.length === 0 && (
+                <div className="px-5 py-6 text-center text-xs text-[#5E6C84]">
+                  All leadership registrations have been verified and approved.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-[#DFE1E6] shadow-xs overflow-hidden">
+            <div className="px-5 py-3 border-b border-[#EBECF0] bg-[#FAFBFC]">
+              <h3 className="text-sm font-bold text-[#172B4D]">Active User Clearance Registry</h3>
+            </div>
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="bg-[#FAFBFC] text-[#5E6C84] border-b border-[#EBECF0]">
+                  <th className="text-left px-5 py-2.5 font-semibold">User</th>
+                  <th className="text-left px-5 py-2.5 font-semibold">Email</th>
+                  <th className="text-left px-5 py-2.5 font-semibold">Entity Clearance</th>
+                  <th className="text-left px-5 py-2.5 font-semibold">Assigned Team</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#EBECF0]">
+                {users.map(u => {
+                  const def = ROLE_DEFINITIONS[u.role] || ROLE_DEFINITIONS.member;
+                  return (
+                    <tr key={u.id} className="hover:bg-[#FAFBFC] transition-colors">
+                      <td className="px-5 py-2.5 font-medium text-[#172B4D] flex items-center gap-2">
+                        <span className={`w-5 h-5 rounded-full ${u.avatarBg} text-white text-[10px] font-bold flex items-center justify-center`}>
+                          {u.initials}
+                        </span>
+                        <span>{u.name}</span>
+                      </td>
+                      <td className="px-5 py-2.5 text-[#5E6C84] font-mono">{u.email}</td>
+                      <td className="px-5 py-2.5">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border ${def.color}`}>
+                          {def.title} ({def.clearanceLevel})
+                        </span>
+                      </td>
+                      <td className="px-5 py-2.5 text-[#5E6C84]">{u.teamName}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // ISSUE DETAIL MODAL (2-COLUMN DRAWER)
+    // =========================================================================
+    function CardDetailModal({
+      card,
+      isOpen,
+      onClose,
+      currentRole,
+      onMoveCard,
+      onAddComment,
+      currentUser,
+      onShowToast
+    }) {
+      const [newComment, setNewComment] = useState('');
+      const [activeTab, setActiveTab] = useState('comments');
+
+      if (!isOpen || !card) return null;
+
+      const issueKey = card.key || `OGV-${card.id.replace(/[^0-9]/g,'')||'101'}`;
+
+      const handleSubmitComment = (e) => {
+        e.preventDefault();
+        if (!newComment.trim()) return;
+        onAddComment(card.id, newComment.trim());
+        setNewComment('');
+        onShowToast({ type: 'success', title: 'Comment Added', message: 'Your review feedback has been logged.' });
+      };
+
+      const getStatusLozenge = (col) => {
+        const m = {
+          member: 'bg-[#DEEBFF] text-[#0052CC] border-[#B3D4FF]',
+          leader: 'bg-[#FFF0B3] text-[#172B4D] border-[#FFE380]',
+          lcvp:   'bg-[#E3FCEF] text-[#006644] border-[#79F2C0]'
+        };
+        const labels = {
+          member: 'SUBMISSIONS',
+          leader: 'LEADER REVIEW',
+          lcvp:   'READY TO POST'
+        };
+        return (
+          <span className={`px-2.5 py-1 rounded text-xs font-bold uppercase tracking-wider border ${m[col]||''}`}>
+            {labels[col] || col}
+          </span>
+        );
+      };
+
+      const ckL = canTransition(currentRole, 'member', 'leader');
+      const ckV = canTransition(currentRole, 'leader', 'lcvp');
+      const ckR = canTransition(currentRole, 'leader', 'member');
+
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-xs animate-app-fadeIn font-sans">
+          <div className="bg-white rounded-lg w-full max-w-4xl max-h-[92vh] shadow-app-modal border border-[#DFE1E6] overflow-hidden flex flex-col text-[#172B4D]">
+            
+            <div className="px-6 py-3 border-b border-[#EBECF0] flex items-center justify-between bg-white sticky top-0 z-10">
+              <div className="flex items-center gap-2">
+                <TaskIcon className="w-4 h-4 shrink-0" />
+                <span className="text-xs font-mono font-bold text-[#0052CC]">{issueKey}</span>
+                <span className="text-xs text-[#5E6C84]">/</span>
+                <span className="text-xs text-[#5E6C84] font-medium">Deliverable Details</span>
+                <button
+                  onClick={() => {
+                    navigator.clipboard?.writeText?.(issueKey);
+                    onShowToast({ type: 'success', title: 'Copied', message: `${issueKey} copied to clipboard.` });
+                  }}
+                  className="p-1 text-[#5E6C84] hover:text-[#172B4D] rounded"
+                  title="Copy Issue Key"
+                >
+                  <CopyIcon className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={onClose}
+                  className="w-7 h-7 rounded hover:bg-[#EBECF0] text-[#5E6C84] hover:text-[#172B4D] flex items-center justify-center text-lg font-bold transition-colors"
+                >
+                  &times;
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1 flex flex-col md:flex-row gap-6">
+              <div className="flex-1 flex flex-col gap-5">
+                <h1 className="text-lg font-bold text-[#172B4D] leading-snug">
+                  {card.title}
+                </h1>
+
+                {card.canvaUrl && (
+                  <div className="bg-[#FAFBFC] border border-[#DFE1E6] rounded-md p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded bg-[#00C4CC] text-white font-bold flex items-center justify-center text-sm shrink-0 shadow-xs">
+                          C
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-[#172B4D]">Canva Project Asset</div>
+                          <a
+                            href={card.canvaUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-[#0052CC] hover:underline font-mono truncate block max-w-sm"
+                          >
+                            {card.canvaUrl}
+                          </a>
+                        </div>
+                      </div>
+                      <a
+                        href={card.canvaUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 bg-[#0052CC] hover:bg-[#0747A6] text-white rounded text-xs font-semibold flex items-center gap-1.5 shrink-0 transition-colors shadow-xs"
+                      >
+                        <span>Open Design</span>
+                        <ExternalLinkIcon className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <h2 className="text-xs font-bold text-[#5E6C84] uppercase tracking-wider mb-2">
+                    Description & Campaign Brief
+                  </h2>
+                  <div className="bg-[#FAFBFC] border border-[#DFE1E6] rounded-md p-3.5 text-xs text-[#172B4D] leading-relaxed whitespace-pre-wrap">
+                    {card.caption || 'No campaign brief provided.'}
+                  </div>
+                </div>
+
+                <div className="mt-2 pt-4 border-t border-[#EBECF0]">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3 text-xs font-bold">
+                      <button
+                        onClick={() => setActiveTab('comments')}
+                        className={`pb-1 border-b-2 transition-colors ${
+                          activeTab === 'comments' ? 'border-[#0052CC] text-[#0052CC]' : 'border-transparent text-[#5E6C84] hover:text-[#172B4D]'
+                        }`}
+                      >
+                        Comments ({card.comments?.length || 0})
+                      </button>
+                      <button
+                        onClick={() => setActiveTab('history')}
+                        className={`pb-1 border-b-2 transition-colors ${
+                          activeTab === 'history' ? 'border-[#0052CC] text-[#0052CC]' : 'border-transparent text-[#5E6C84] hover:text-[#172B4D]'
+                        }`}
+                      >
+                        History & Audit Log
+                      </button>
+                    </div>
+                  </div>
+
+                  <form onSubmit={handleSubmitComment} className="mb-4">
+                    <div className="border border-[#DFE1E6] rounded-md p-2.5 focus-within:border-[#0052CC] focus-within:ring-2 focus-within:ring-[#DEEBFF] transition-all bg-white">
+                      <textarea
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        placeholder="Add review feedback, design revisions, or approval notes..."
+                        rows={2}
+                        className="w-full text-xs outline-none resize-none placeholder:text-[#5E6C84]"
+                      />
+                      <div className="flex items-center justify-between pt-2 border-t border-[#EBECF0] mt-1.5">
+                        <span className="text-[11px] text-[#5E6C84]">
+                          Posting as: <strong className="text-[#172B4D]">{currentUser?.name}</strong>
+                        </span>
+                        <button
+                          type="submit"
+                          disabled={!newComment.trim()}
+                          className="px-3.5 py-1 bg-[#0052CC] hover:bg-[#0747A6] disabled:bg-[#EBECF0] disabled:text-[#A5ADBA] text-white text-xs font-semibold rounded transition-colors shadow-xs"
+                        >
+                          Save Comment
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+
+                  <div className="space-y-3">
+                    {(card.comments || []).map(c => (
+                      <div key={c.id} className="p-3 bg-[#FAFBFC] border border-[#DFE1E6] rounded-md flex gap-3 text-xs">
+                        <div className="w-7 h-7 rounded-full bg-[#0052CC] text-white text-[10px] font-bold flex items-center justify-center shrink-0">
+                          {c.authorName ? c.authorName.split(' ').map(n=>n[0]).join('').slice(0,2) : 'US'}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between text-[11px] mb-1">
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-bold text-[#172B4D]">{c.authorName}</span>
+                              <span className="text-[#5E6C84]">({c.authorRole})</span>
+                            </div>
+                            <span className="text-[#5E6C84]">{c.timestamp}</span>
+                          </div>
+                          <p className="text-xs leading-relaxed text-[#172B4D]">{c.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full md:w-72 bg-[#FAFBFC] border border-[#DFE1E6] rounded-lg p-4 flex flex-col gap-4 self-start">
+                <div>
+                  <span className="text-[11px] font-bold text-[#5E6C84] uppercase tracking-wider block mb-1.5">
+                    Current Status
+                  </span>
+                  <div className="mb-3">
+                    {getStatusLozenge(card.column)}
+                  </div>
+
+                  <span className="text-[11px] font-bold text-[#5E6C84] uppercase tracking-wider block mb-1.5">
+                    Workflow Actions (RBAC Gated)
+                  </span>
+                  <div className="space-y-2">
+                    {card.column === 'member' && (
+                      <button
+                        onClick={() => {
+                          if (!ckL.allowed) { alert(`ACCESS DENIED:\n${ckL.reason}`); return; }
+                          onMoveCard(card.id, 'leader');
+                          onShowToast({ type: 'success', title: 'Moved', message: 'Escalated to Leader Review.' });
+                        }}
+                        className={`w-full py-1.5 px-3 rounded text-xs font-semibold flex items-center justify-between transition-colors ${
+                          ckL.allowed
+                            ? 'bg-[#0052CC] hover:bg-[#0747A6] text-white shadow-xs'
+                            : 'bg-[#EBECF0] text-[#A5ADBA] cursor-not-allowed border border-[#DFE1E6]'
+                        }`}
+                      >
+                        <span>Escalate to Leader</span>
+                        <ArrowRightIcon className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+
+                    {card.column === 'leader' && (
+                      <>
+                        <button
+                          onClick={() => {
+                            if (!ckV.allowed) { alert(`ACCESS DENIED:\n${ckV.reason}`); return; }
+                            onMoveCard(card.id, 'lcvp');
+                            triggerConfetti();
+                            onShowToast({ type: 'success', title: 'Approved', message: 'Authorized as Ready to Post!' });
+                          }}
+                          className={`w-full py-1.5 px-3 rounded text-xs font-semibold flex items-center justify-between transition-colors ${
+                            ckV.allowed
+                              ? 'bg-[#36B37E] hover:bg-[#00875A] text-white shadow-xs'
+                              : 'bg-[#EBECF0] text-[#A5ADBA] cursor-not-allowed border border-[#DFE1E6]'
+                          }`}
+                        >
+                          <span>Approve to LCVP</span>
+                          <ArrowRightIcon className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (!ckR.allowed) { alert(`ACCESS DENIED:\n${ckR.reason}`); return; }
+                            onMoveCard(card.id, 'member', 'Modifications requested by leader.');
+                            onShowToast({ type: 'warning', title: 'Returned', message: 'Returned to Submissions for updates.' });
+                          }}
+                          className="w-full py-1.5 px-3 rounded text-xs font-semibold bg-[#FFEBE6] text-[#BF2600] hover:bg-[#FFBDAD] border border-[#FF8F73] flex items-center justify-between transition-colors"
+                        >
+                          <span>Request Changes</span>
+                          <ArrowLeftIcon className="w-3.5 h-3.5" />
+                        </button>
+                      </>
+                    )}
+
+                    {card.column === 'lcvp' && (
+                      <div className="p-2.5 bg-[#E3FCEF] border border-[#79F2C0] rounded text-xs text-[#006644] font-medium flex items-center gap-1.5">
+                        <CheckIcon className="w-4 h-4 text-[#36B37E] shrink-0" />
+                        <span>Authorized for immediate social media publication.</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="border-t border-[#EBECF0] pt-3 space-y-3 text-xs">
+                  <div>
+                    <span className="text-[#5E6C84] block text-[11px] font-semibold mb-0.5">Assignee</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 rounded-full bg-[#0052CC] text-white text-[10px] font-bold flex items-center justify-center">
+                        {card.uploaderName?.slice(0, 2).toUpperCase()}
+                      </div>
+                      <span className="font-semibold text-[#172B4D]">{card.uploaderName}</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="text-[#5E6C84] block text-[11px] font-semibold mb-0.5">Priority</span>
+                    <span className="font-medium capitalize">{card.priority || 'Medium'}</span>
+                  </div>
+
+                  <div>
+                    <span className="text-[#5E6C84] block text-[11px] font-semibold mb-0.5">Category Labels</span>
+                    <div className="flex flex-wrap gap-1">
+                      {(card.types || []).map(t => (
+                        <span key={t} className="px-2 py-0.5 bg-[#EBECF0] rounded text-[11px] font-medium">
+                          {t.replace('_', ' ')}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="text-[#5E6C84] block text-[11px] font-semibold mb-0.5">Squad Team</span>
+                    <span className="font-medium">{card.teamName}</span>
+                  </div>
+
+                  <div>
+                    <span className="text-[#5E6C84] block text-[11px] font-semibold mb-0.5">Created Date</span>
+                    <span className="text-[#5E6C84]">{card.createdAt}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // CREATE ISSUE MODAL
+    // =========================================================================
+    function AddFlyerModal({ isOpen, onClose, onAddFlyer, currentUser, onShowToast }) {
+      const [title, setTitle] = useState('');
+      const [canvaUrl, setCanvaUrl] = useState('');
+      const [caption, setCaption] = useState('');
+      const [priority, setPriority] = useState('medium');
+      const [types, setTypes] = useState(['trend_based']);
+
+      if (!isOpen) return null;
+
+      const toggleType = (k) => {
+        if (types.includes(k)) {
+          if (types.length === 1) return;
+          setTypes(types.filter(t => t !== k));
+        } else {
+          setTypes([...types, k]);
+        }
+      };
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!title.trim() || !canvaUrl.trim()) return;
+
+        onAddFlyer({
+          title: title.trim(),
+          canvaUrl: canvaUrl.trim(),
+          caption: caption.trim(),
+          priority,
+          types: types.length > 0 ? types : ['trend_based']
+        });
+
+        setTitle('');
+        setCanvaUrl('');
+        setCaption('');
+        setPriority('medium');
+        setTypes(['trend_based']);
+        onClose();
+
+        onShowToast({
+          type: 'success',
+          title: 'Issue Created',
+          message: 'New deliverable logged into Submissions column.'
+        });
+      };
+
+      const typeConfig = [
+        { key: 'trend_based', label: 'Trend Based', desc: 'Social audio, reels, youth campus trends', active: 'bg-[#EAE6FF] border-[#C0B6F2] text-[#403294]' },
+        { key: 'country_based', label: 'Country Based', desc: 'Destination portfolio (Vietnam, Egypt, Brazil)', active: 'bg-[#E6FCFF] border-[#79F2C0] text-[#006644]' },
+        { key: 'project_based', label: 'Project Based', desc: 'SDG volunteer goals (SDG 4 Education, SDG 13 Climate)', active: 'bg-[#DEEBFF] border-[#B3D4FF] text-[#0052CC]' }
+      ];
+
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-app-fadeIn font-sans">
+          <div className="bg-white rounded-lg w-full max-w-lg shadow-app-modal border border-[#DFE1E6] overflow-hidden flex flex-col text-[#172B4D]">
+            <div className="px-6 py-3.5 border-b border-[#EBECF0] flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <TaskIcon className="w-4 h-4" />
+                <h2 className="text-sm font-bold">Create Deliverable Issue</h2>
+              </div>
+              <button onClick={onClose} className="w-7 h-7 rounded hover:bg-[#EBECF0] text-[#5E6C84] hover:text-[#172B4D] flex items-center justify-center text-lg font-bold">
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-4 overflow-y-auto max-h-[80vh]">
+              <div>
+                <label className="block text-xs font-semibold text-[#5E6C84] mb-1.5">
+                  Summary / Campaign Title <span className="text-[#FF5630]">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="e.g. Global Classroom Vietnam: Winter 2026 Recruitment"
+                  className="w-full text-sm px-3 py-2 rounded border border-[#DFE1E6] hover:border-[#4C9AFF] focus:border-[#0052CC] focus:ring-2 focus:ring-[#DEEBFF] outline-none transition-all placeholder:text-slate-400"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#5E6C84] mb-1.5">
+                  Canva Design Asset Link <span className="text-[#FF5630]">*</span>
+                </label>
+                <input
+                  type="url"
+                  required
+                  value={canvaUrl}
+                  onChange={(e) => setCanvaUrl(e.target.value)}
+                  placeholder="https://www.canva.com/design/DAG..."
+                  className="w-full text-sm px-3 py-2 rounded border border-[#DFE1E6] hover:border-[#4C9AFF] focus:border-[#0052CC] focus:ring-2 focus:ring-[#DEEBFF] outline-none transition-all placeholder:text-slate-400"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#5E6C84] mb-1.5">
+                  Campaign Classifications <span className="text-[#FF5630]">*</span>
+                </label>
+                <div className="flex flex-col gap-2">
+                  {typeConfig.map(tc => (
+                    <label
+                      key={tc.key}
+                      onClick={() => toggleType(tc.key)}
+                      className={`p-2.5 rounded border flex items-center gap-3 cursor-pointer transition-all ${
+                        types.includes(tc.key) ? tc.active : 'bg-[#FAFBFC] border-[#DFE1E6] hover:bg-[#F4F5F7]'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={types.includes(tc.key)}
+                        onChange={() => {}}
+                        className="w-4 h-4 rounded border-[#DFE1E6] text-[#0052CC] focus:ring-[#0052CC]"
+                      />
+                      <div>
+                        <span className="text-xs font-bold block">{tc.label}</span>
+                        <p className="text-[11px] opacity-80">{tc.desc}</p>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#5E6C84] mb-1.5">
+                  Priority
+                </label>
+                <select
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value)}
+                  className="w-full text-xs px-3 py-2 rounded border border-[#DFE1E6] bg-white outline-none focus:border-[#0052CC]"
+                >
+                  <option value="high">High Priority</option>
+                  <option value="medium">Medium Priority</option>
+                  <option value="low">Low Priority</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#5E6C84] mb-1.5">
+                  Description / Campaign Brief
+                </label>
+                <textarea
+                  rows={2}
+                  value={caption}
+                  onChange={(e) => setCaption(e.target.value)}
+                  placeholder="Target faculty, key messaging, registration deadlines..."
+                  className="w-full text-sm px-3 py-2 rounded border border-[#DFE1E6] hover:border-[#4C9AFF] focus:border-[#0052CC] focus:ring-2 focus:ring-[#DEEBFF] outline-none transition-all placeholder:text-slate-400"
+                />
+              </div>
+
+              <div className="text-[11px] text-[#5E6C84] bg-[#FAFBFC] border border-[#DFE1E6] rounded p-2.5">
+                Submitting as <strong className="text-[#172B4D]">{currentUser?.name}</strong>. Deliverable will be routed to the <strong>Submissions</strong> column.
+              </div>
+
+              <div className="pt-3 border-t border-[#EBECF0] flex items-center justify-end gap-2.5 mt-1">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="text-sm font-medium px-4 py-2 rounded text-[#5E6C84] hover:bg-[#EBECF0] transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="text-sm font-semibold px-4 py-2 rounded text-white bg-[#0052CC] hover:bg-[#0747A6] shadow-xs transition-colors"
+                >
+                  Create Deliverable
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // LOGIN SCREEN
+    // =========================================================================
+    function LoginScreen({ onLogin }) {
+      const [email, setEmail] = useState('');
+      const [password, setPassword] = useState('aiesec2728');
+      const [error, setError] = useState('');
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!email.trim()) { setError('Please enter your AIESEC email address.'); return; }
+        const matched = USERS.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
+        if (matched) { setError(''); onLogin(matched); }
+        else {
+          const name = email.split('@')[0].replace('.', ' ');
+          const formatted = name.charAt(0).toUpperCase() + name.slice(1);
+          onLogin({
+            id: `u-custom-${Date.now()}`,
+            name: formatted || 'Team Member',
+            email: email.trim(),
+            role: 'member',
+            teamName: 'Team Alpha (Global Classroom)',
+            initials: (formatted[0]||'M')+(formatted[1]||'B').toUpperCase(),
+            title: 'Team Member',
+            avatarBg: 'bg-[#0052CC]'
+          });
+        }
+      };
+
+      return (
+        <div className="min-h-screen bg-[#F4F5F7] flex flex-col justify-between font-sans antialiased text-[#172B4D]">
+          <div className="bg-[#0747A6] text-white py-2 px-6 flex items-center justify-between text-xs border-b border-[#0052CC]">
+            <div className="flex items-center gap-2 tracking-wide font-medium">
+              <span className="font-bold">AIESEC IN MORATUWA</span>
+              <span className="opacity-60">/</span><span>TERM 27.28</span>
+              <span className="opacity-60">/</span><span className="text-[#FFE380] font-semibold">AIESEC IN CS TRACKER · oGV B2C</span>
+            </div>
+            <div className="hidden sm:flex items-center gap-2 text-[11px] opacity-90">
+              <ShieldIcon className="w-3.5 h-3.5 text-emerald-300" />
+              <span>RBAC & Governance Protocol Active</span>
+            </div>
+          </div>
+
+          <div className="flex-1 flex items-center justify-center p-4 my-6">
+            <div className="w-full max-w-xl bg-white rounded-lg shadow-app-modal border border-[#DFE1E6] overflow-hidden">
+              <div className="pt-8 pb-6 px-8 text-center border-b border-[#EBECF0]">
+                <div className="inline-flex items-center justify-center gap-2 mb-3">
+                  <AiesecCsLogo className="w-8 h-8" />
+                  <span className="text-xl font-bold tracking-tight text-[#172B4D]">
+                    AIESEC <span className="font-semibold text-[#0052CC]">in CS</span> <span className="font-normal text-[#5E6C84]">Tracker</span>
+                  </span>
+                </div>
+                <h1 className="text-xl font-semibold text-[#172B4D]">Log in to your account</h1>
+                <p className="text-xs text-[#5E6C84] mt-1">oGV B2C Deliverables & Governance Performance Workspace</p>
+              </div>
+
+              <div className="p-8">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {error && (
+                    <div className="p-3 text-xs rounded bg-[#FFEBE6] text-[#BF2600] border border-[#FF8F73] font-medium">
+                      {error}
+                    </div>
+                  )}
+                  <div>
+                    <label className="block text-xs font-semibold text-[#5E6C84] uppercase tracking-wider mb-1.5">
+                      AIESEC Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                      placeholder="e.g. kavinda.perera@aiesec.net"
+                      className="w-full px-3 py-2 text-sm border border-[#DFE1E6] rounded hover:border-[#4C9AFF] focus:border-[#0052CC] focus:ring-2 focus:ring-[#DEEBFF] outline-none transition-all placeholder:text-slate-400"
+                    />
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-semibold text-[#5E6C84] uppercase tracking-wider">
+                        Password
+                      </label>
+                      <span className="text-[11px] text-[#0052CC] cursor-pointer">Term 27.28 SSO</span>
+                    </div>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-[#DFE1E6] rounded hover:border-[#4C9AFF] focus:border-[#0052CC] focus:ring-2 focus:ring-[#DEEBFF] outline-none transition-all"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 px-4 bg-[#0052CC] hover:bg-[#0747A6] text-white font-semibold text-sm rounded shadow-xs transition-colors flex items-center justify-center gap-2"
+                  >
+                    Continue to AIESEC CS Tracker
+                  </button>
+                </form>
+
+                <div className="relative my-6">
+                  <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-[#DFE1E6]" /></div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-white px-3 text-[#5E6C84] font-semibold text-[11px] tracking-wider">
+                      Or One-Click Demo Login By Clearance
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {USERS.map(user => {
+                    const badge = ROLE_DEFINITIONS[user.role] || ROLE_DEFINITIONS.member;
+                    return (
+                      <button
+                        key={user.id}
+                        type="button"
+                        onClick={() => onLogin(user)}
+                        className="text-left p-3 rounded border border-[#DFE1E6] hover:border-[#0052CC] hover:bg-[#F4F5F7] transition-all group flex items-start gap-2.5"
+                      >
+                        <div className={`w-8 h-8 rounded-full ${user.avatarBg} text-white text-xs font-bold flex items-center justify-center shrink-0 shadow-xs`}>
+                          {user.initials}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between gap-1 mb-0.5">
+                            <span className="text-xs font-bold text-[#172B4D] truncate group-hover:text-[#0052CC]">
+                              {user.name}
+                            </span>
+                            <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${badge.color}`}>
+                              L{badge.level}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-[#5E6C84] truncate">{user.title}</p>
+                          <p className="text-[10px] text-slate-400 font-mono truncate">{user.email}</p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <footer className="py-4 text-center text-xs text-[#5E6C84] border-t border-[#DFE1E6] bg-white">
+            AIESEC in University of Moratuwa · Term 27.28 · oGV B2C Deliverables & Recognition Governance Portal
+          </footer>
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // MAIN APP COMPONENT
+    // =========================================================================
+    function App() {
+      const [currentUser, setCurrentUser] = useState(() => {
+        try {
+          const s = localStorage.getItem('aiesec_cs_tracker_auth_session') || localStorage.getItem('ogv_jira_auth_session');
+          return s ? JSON.parse(s) : null;
+        } catch(e) {
+          return null;
+        }
+      });
+
+      const [cards, setCards] = useState(() => {
+        try {
+          const s = localStorage.getItem('aiesec_cs_tracker_cards_v4') || localStorage.getItem('ogv_jira_rbac_cards_v4');
+          return s ? JSON.parse(s) : INITIAL_CARDS;
+        } catch(e) {
+          return INITIAL_CARDS;
+        }
+      });
+
+      const [activeView, setActiveView] = useState('kanban');
+      const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+      const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+      const [selectedCard, setSelectedCard] = useState(null);
+      const [searchQuery, setSearchQuery] = useState('');
+      const [toasts, setToasts] = useState([]);
+      const [backendStatus, setBackendStatus] = useState({ status: 'checking', database: 'local_storage', message: '' });
+
+      const currentRole = currentUser?.role || 'member';
+
+      useEffect(() => {
+        let isMounted = true;
+        async function syncRemoteData() {
+          try {
+            const hRes = await fetch('/api/health');
+            if (hRes.ok) {
+              const hData = await hRes.json();
+              if (isMounted) setBackendStatus(hData);
+            }
+            const fRes = await fetch('/api/flyers');
+            if (fRes.ok) {
+              const fData = await fRes.json();
+              if (isMounted && fData.data && fData.data.length > 0) {
+                setCards(fData.data);
+              }
+            }
+          } catch(e) {
+            // Running offline or standalone HTML file
+          }
+        }
+        syncRemoteData();
+        return () => { isMounted = false; };
+      }, []);
+
+      useEffect(() => {
+        try {
+          localStorage.setItem('aiesec_cs_tracker_cards_v4', JSON.stringify(cards));
+        } catch(e) {}
+      }, [cards]);
+
+      useEffect(() => {
+        try {
+          if (currentUser) localStorage.setItem('aiesec_cs_tracker_auth_session', JSON.stringify(currentUser));
+          else {
+            localStorage.removeItem('aiesec_cs_tracker_auth_session');
+            localStorage.removeItem('ogv_jira_auth_session');
+          }
+        } catch(e) {}
+      }, [currentUser]);
+
+      useEffect(() => {
+        function handleKeyDown(e) {
+          if (['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)) return;
+          if (e.key === 'c' || e.key === 'C') {
+            e.preventDefault();
+            setIsAddModalOpen(true);
+          } else if (e.key === '[') {
+            e.preventDefault();
+            setSidebarCollapsed(prev => !prev);
+          } else if (e.key === 'Escape') {
+            setIsAddModalOpen(false);
+            setSelectedCard(null);
+          }
+        }
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, []);
+
+      const showToast = ({ type = 'info', title, message }) => {
+        const id = `t-${Date.now()}-${Math.random()}`;
+        setToasts(prev => [...prev, { id, type, title, message }]);
+        setTimeout(() => {
+          setToasts(prev => prev.filter(t => t.id !== id));
+        }, 4000);
+      };
+
+      const handleDismissToast = (id) => {
+        setToasts(prev => prev.filter(t => t.id !== id));
+      };
+
+      const handleLogin = (u) => {
+        setCurrentUser(u);
+        showToast({
+          type: 'success',
+          title: 'Logged In',
+          message: `Welcome to AIESEC in CS Tracker, ${u.name} (${ROLE_DEFINITIONS[u.role]?.clearanceLevel})`
+        });
+      };
+
+      const handleLogout = () => {
+        setCurrentUser(null);
+        localStorage.removeItem('aiesec_cs_tracker_auth_session');
+        localStorage.removeItem('ogv_jira_auth_session');
+      };
+
+      const handleRoleChange = (role) => {
+        const matched = USERS.find(u => u.role === role);
+        if (matched) {
+          setCurrentUser(matched);
+          showToast({
+            type: 'info',
+            title: 'Role Switched',
+            message: `Now evaluating as: ${matched.name} (${ROLE_DEFINITIONS[role]?.clearanceLevel})`
+          });
+        }
+      };
+
+      const handleMoveCard = (cardId, targetCol, commentText = '') => {
+        const card = cards.find(c => c.id === cardId);
+        if (!card) return;
+
+        const ck = canTransition(currentRole, card.column, targetCol);
+        if (!ck.allowed) {
+          showToast({ type: 'error', title: 'Permission Denied', message: ck.reason });
+          return;
+        }
+
+        const now = new Date();
+        const ts = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+        const roleTitles = { member: 'Team Member', leader: 'Team Leader', lcvp: 'LCVP oGV B2C', admin: 'Candidate LCVP TM' };
+        const colNames = { member: 'Submissions', leader: 'Leader Review', lcvp: 'Ready to Post' };
+        const note = commentText || `Moved from [${colNames[card.column]}] to [${colNames[targetCol]}].`;
+
+        const updComments = [
+          ...(card.comments || []),
+          {
+            id: `c-${Date.now()}`,
+            authorName: currentUser.name,
+            authorRole: roleTitles[currentUser.role] || currentUser.role,
+            text: note,
+            timestamp: ts,
+            isMovementLog: true
+          }
+        ];
+
+        const updCards = cards.map(c => c.id === cardId ? { ...c, column: targetCol, comments: updComments } : c);
+        setCards(updCards);
+        if (selectedCard && selectedCard.id === cardId) {
+          setSelectedCard({ ...selectedCard, column: targetCol, comments: updComments });
+        }
+
+        // Remote sync with Supabase Backend API
+        fetch(`/api/flyers/${cardId}/column`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            targetColumn: targetCol,
+            userRole: currentRole,
+            userId: currentUser.id,
+            userName: currentUser.name,
+            commentText: note
+          })
+        }).catch(() => {});
+      };
+
+      const handleAddFlyer = ({ title, canvaUrl, caption, priority, types }) => {
+        const now = new Date();
+        const ts = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+        const count = cards.length + 1;
+        const newCard = {
+          id: `KB-${String(count).padStart(2,'0')}`,
+          key: `OGV-10${count}`,
+          title,
+          canvaUrl,
+          caption,
+          priority: priority || 'medium',
+          types: types.length > 0 ? types : ['trend_based'],
+          column: 'member',
+          uploaderName: currentUser.name,
+          uploaderId: currentUser.id,
+          uploaderRole: currentUser.role,
+          teamName: currentUser.teamName || 'Team Alpha (Global Classroom)',
+          createdAt: ts,
+          comments: [
+            {
+              id: `c-init-${Date.now()}`,
+              authorName: currentUser.name,
+              authorRole: currentUser.title || 'Team Member',
+              text: `Created deliverable. Category: ${types.join(', ')}.`,
+              timestamp: ts
+            }
+          ]
+        };
+        setCards([newCard, ...cards]);
+
+        // Remote sync with Supabase Backend API
+        fetch('/api/flyers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title,
+            canvaUrl,
+            caption,
+            priority: priority || 'medium',
+            types,
+            uploaderName: currentUser.name,
+            uploaderId: currentUser.id,
+            uploaderRole: currentUser.role,
+            teamName: currentUser.teamName || 'Team Alpha (Global Classroom)'
+          })
+        }).catch(() => {});
+      };
+
+      const handleAddComment = (cardId, text) => {
+        const now = new Date();
+        const ts = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+        const roleTitles = { member: 'Team Member', leader: 'Team Leader', lcvp: 'LCVP oGV B2C', admin: 'Candidate LCVP TM' };
+        const nc = {
+          id: `c-${Date.now()}`,
+          authorName: currentUser.name,
+          authorRole: roleTitles[currentUser.role] || currentUser.role,
+          text,
+          timestamp: ts
+        };
+        setCards(cards.map(c => c.id === cardId ? { ...c, comments: [...(c.comments || []), nc] } : c));
+        if (selectedCard && selectedCard.id === cardId) {
+          setSelectedCard({ ...selectedCard, comments: [...(selectedCard.comments || []), nc] });
+        }
+
+        // Remote sync with Supabase Backend API
+        fetch(`/api/flyers/${cardId}/comments`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            authorName: currentUser.name,
+            authorRole: roleTitles[currentUser.role] || currentUser.role,
+            authorId: currentUser.id,
+            text
+          })
+        }).catch(() => {});
+      };
+
+      const handleSeedDatabase = async () => {
+        try {
+          const res = await fetch('/api/seed', { method: 'POST' });
+          const json = await res.json();
+          if (res.ok && json.success) {
+            const fRes = await fetch('/api/flyers');
+            if (fRes.ok) {
+              const fData = await fRes.json();
+              if (fData.data && fData.data.length > 0) setCards(fData.data);
+            }
+          }
+          return json;
+        } catch(e) {
+          return { error: e.message };
+        }
+      };
+
+      const handleResetData = () => {
+        if (confirm('Reset to initial demo data?')) {
+          localStorage.removeItem('aiesec_cs_tracker_cards_v4');
+          localStorage.removeItem('ogv_jira_rbac_cards_v4');
+          setCards(INITIAL_CARDS);
+          showToast({ type: 'info', title: 'Data Reset', message: 'Demo cards restored to default state.' });
+        }
+      };
+
+      if (!currentUser) return <LoginScreen onLogin={handleLogin} />;
+
+      const readyCount = cards.filter(c => c.column === 'lcvp').length;
+
+      return (
+        <div className="min-h-screen bg-[#F4F5F7] text-[#172B4D] flex flex-col font-sans antialiased">
+          <TrackerNavbar
+            currentUser={currentUser}
+            currentRole={currentRole}
+            onRoleChange={handleRoleChange}
+            onOpenAddModal={() => setIsAddModalOpen(true)}
+            onLogout={handleLogout}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            sidebarCollapsed={sidebarCollapsed}
+            setSidebarCollapsed={setSidebarCollapsed}
+          />
+
+          <div className="flex-1 flex overflow-hidden">
+            <TrackerSidebar
+              activeView={activeView}
+              onViewChange={setActiveView}
+              collapsed={sidebarCollapsed}
+              setCollapsed={setSidebarCollapsed}
+              cardsCount={cards.length}
+              readyCount={readyCount}
+            />
+
+            <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-7 max-w-7xl mx-auto w-full">
+              {activeView === 'kanban' && (
+                <KanbanBoard
+                  cards={cards}
+                  currentRole={currentRole}
+                  currentUser={currentUser}
+                  onCardClick={setSelectedCard}
+                  onMoveCard={handleMoveCard}
+                  onOpenAddModal={() => setIsAddModalOpen(true)}
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  onShowToast={showToast}
+                />
+              )}
+
+              {activeView === 'roadmap' && (
+                <RoadmapView
+                  cards={cards}
+                  onCardClick={setSelectedCard}
+                />
+              )}
+
+              {activeView === 'releases' && (
+                <ReleasesView
+                  cards={cards}
+                  onCardClick={setSelectedCard}
+                />
+              )}
+
+              {activeView === 'scoreboard' && (
+                <ScoreboardView
+                  cards={cards}
+                  users={USERS}
+                />
+              )}
+
+              {activeView === 'team' && (
+                <TeamDirectoryView
+                  users={USERS}
+                  cards={cards}
+                />
+              )}
+
+              {activeView === 'admin' && (
+                <AdminView
+                  users={USERS}
+                  onResetData={handleResetData}
+                  onRoleChange={handleRoleChange}
+                  onShowToast={showToast}
+                  backendStatus={backendStatus}
+                  onTriggerSeed={handleSeedDatabase}
+                />
+              )}
+            </main>
+          </div>
+
+          <AddFlyerModal
+            isOpen={isAddModalOpen}
+            onClose={() => setIsAddModalOpen(false)}
+            onAddFlyer={handleAddFlyer}
+            currentUser={currentUser}
+            onShowToast={showToast}
+          />
+
+          <CardDetailModal
+            card={selectedCard}
+            isOpen={!!selectedCard}
+            onClose={() => setSelectedCard(null)}
+            currentRole={currentRole}
+            onMoveCard={handleMoveCard}
+            onAddComment={handleAddComment}
+            currentUser={currentUser}
+            onShowToast={showToast}
+          />
+
+          <ToastContainer toasts={toasts} onDismiss={handleDismissToast} />
+        </div>
+      );
+    }
+
+    // =========================================================================
+    // MOUNT TO DOM
+    // =========================================================================
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
